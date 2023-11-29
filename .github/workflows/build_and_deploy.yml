@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'termurin'
+          distribution: 'temurin'
 
       # 서브 모듈 접근
       - name: Checkout repo
