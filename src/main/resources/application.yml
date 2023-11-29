@@ -4,3 +4,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+springdoc:
+  swagger-ui:
+    path: /
+    operations-sorter: alpha
+    display-request-duration: true
