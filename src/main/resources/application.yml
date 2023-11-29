@@ -6,6 +6,6 @@ spring:
       matching-strategy: ant_path_matcher
 springdoc:
   swagger-ui:
-    path: /api-docs
+    path: /
     operations-sorter: alpha
     display-request-duration: true
