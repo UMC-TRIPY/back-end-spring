@@ -33,7 +33,7 @@ dependencies {
 }
 
 processResources.dependsOn('copyGitSubmodule')
-task copyGitSubmodule(type: Copy) {
+tasks.register('copyGitSubmodule', Copy) {
     from './config'
     include '*.yml'
     into 'src/main/resources'
