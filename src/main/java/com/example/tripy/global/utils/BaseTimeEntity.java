@@ -1,4 +1,4 @@
-package com.example.tripy.utils;
+package com.example.tripy.global.utils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,4 +1,4 @@
-package com.example.tripy.common.s3;
+package com.example.tripy.global.s3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

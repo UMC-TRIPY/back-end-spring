@@ -1,11 +1,11 @@
-package com.example.tripy.common.s3;
+package com.example.tripy.global.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.tripy.common.s3.dto.S3Result;
+import com.example.tripy.global.s3.dto.S3Result;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

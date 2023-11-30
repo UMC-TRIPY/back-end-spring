@@ -1,4 +1,4 @@
-package com.example.tripy.common.s3.dto;
+package com.example.tripy.global.s3.dto;
 
 import lombok.Getter;
 
