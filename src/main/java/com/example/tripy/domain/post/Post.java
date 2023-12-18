@@ -42,4 +42,5 @@ public class Post extends BaseTimeEntity {
     private Integer category;
 
     private Long planId;
+
 }
