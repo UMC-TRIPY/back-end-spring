@@ -1,15 +1,14 @@
-package com.example.tripy.domain.tag;
+package com.example.tripy.domain.conversation;
 
-import com.example.tripy.domain.posttag.PostTag;
-import com.example.tripy.global.utils.BaseTimeEntity;
+import com.example.tripy.domain.country.Country;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,16 +17,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Tag extends BaseTimeEntity {
+public class Conversation {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String tagName;
+    private String korean;
 
-    @OneToMany(mappedBy = "tag")
-    private List<PostTag> postTags = new ArrayList<>();
+    private String translation;
 
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+
+    
 
 }

@@ -1,15 +1,13 @@
-package com.example.tripy.domain.posttag;
+package com.example.tripy.domain.countrymaterial;
 
-import com.example.tripy.domain.post.Post;
-import com.example.tripy.domain.tag.Tag;
-import com.example.tripy.global.utils.BaseTimeEntity;
+import com.example.tripy.domain.country.Country;
+import com.example.tripy.domain.material.Material;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,22 +16,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PostTag extends BaseTimeEntity {
+public class CountryMaterial {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private String description;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-    
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToOne
+    @JoinColumn(name = "materials_id")
+    private Material material;
+
+
+
 
 }
-
-
-
