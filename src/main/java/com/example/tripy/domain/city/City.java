@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +43,7 @@ public class City extends BaseTimeEntity{
     @OneToMany(mappedBy = "city")
     private List<CityPlan> cityplans = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 

@@ -45,9 +45,9 @@ public class TravelTimePlan extends BaseTimeEntity {
 
     private String memo;
 
-    private String image_url;
+    private String imageUrl;
 
-    private String plan_url;
+    private String planUrl;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)

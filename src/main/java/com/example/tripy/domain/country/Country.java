@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
@@ -34,14 +35,14 @@ public class Country {
     @NotNull
     private String name;
 
-    @OneToOne(mappedBy = "country")
-    private City city;
+    @OneToMany(mappedBy = "country")
+    private List<City> cities = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "continent_id")
     private Continent continent;
 

@@ -29,7 +29,7 @@ public class CityPlan extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    private City city ;
+    private City city;
 
     @ManyToOne
     @JoinColumn(name = "travelplan_id")
