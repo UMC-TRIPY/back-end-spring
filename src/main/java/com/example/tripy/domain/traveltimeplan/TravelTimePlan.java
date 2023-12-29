@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,7 @@ public class TravelTimePlan extends BaseTimeEntity {
     private String color;
 
     @NotNull
-    private String line_color;
+    private String lineColor;
 
     @NotNull
     private String title;
