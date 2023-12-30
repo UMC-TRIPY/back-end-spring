@@ -1,7 +1,7 @@
-package com.example.tripy.domain.posttag;
+package com.example.tripy.domain.cityplan;
 
-import com.example.tripy.domain.post.Post;
-import com.example.tripy.domain.tag.Tag;
+import com.example.tripy.domain.city.City;
+import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +10,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,22 +22,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PostTag extends BaseTimeEntity {
+public class CityPlan extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "city_id")
+    private City city;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-    
-
+    @JoinColumn(name = "travelplan_id")
+    private TravelPlan travelPlan;
 }
-
-
-

@@ -1,7 +1,6 @@
-package com.example.tripy.domain.tag;
+package com.example.tripy.domain.continent;
 
-import com.example.tripy.domain.posttag.PostTag;
-import com.example.tripy.global.utils.BaseTimeEntity;
+import com.example.tripy.domain.country.Country;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,16 +18,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Tag extends BaseTimeEntity {
+public class Continent {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String tagName;
+    private String name;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
-    private List<PostTag> postTags = new ArrayList<>();
-
+    @OneToMany(mappedBy = "continent", fetch = FetchType.LAZY)
+    private List<Country> countries = new ArrayList<>();
+    
 
 }

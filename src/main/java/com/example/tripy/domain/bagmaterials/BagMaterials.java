@@ -1,8 +1,9 @@
-package com.example.tripy.domain.posttag;
+package com.example.tripy.domain.bagmaterials;
 
-import com.example.tripy.domain.post.Post;
-import com.example.tripy.domain.tag.Tag;
+import com.example.tripy.domain.bag.Bag;
+import com.example.tripy.domain.material.Material;
 import com.example.tripy.global.utils.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,22 +20,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PostTag extends BaseTimeEntity {
+public class BagMaterials extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @NotNull
+    @Column(columnDefinition = "boolean default false")
+    private boolean check;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-    
+    @JoinColumn(name = "bag_id")
+    private Bag bag;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "materials_id")
+    private Material material;
 }
-
-
-
