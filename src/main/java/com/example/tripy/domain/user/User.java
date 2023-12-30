@@ -40,13 +40,13 @@ public class User extends BaseTimeEntity {
 
     private String profileImgUrl;
 
-    private Long kakaoToken;
+    private String kakaoToken;
 
-    private Long googleToken;
+    private String googleToken;
 
-    private Long appleToken;
+    private String appleToken;
 
-    private Long naverToken;
+    private String naverToken;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
