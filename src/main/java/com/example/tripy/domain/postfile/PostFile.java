@@ -25,7 +25,7 @@ public class PostFile extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private FileType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 

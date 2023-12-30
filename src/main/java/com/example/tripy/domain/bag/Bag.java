@@ -5,6 +5,7 @@ import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.user.User;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,15 +39,15 @@ public class Bag extends BaseTimeEntity {
     private String content;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
     private TravelPlan travelPlan;
 
-    @OneToMany(mappedBy = "bag")
+    @OneToMany(mappedBy = "bag", fetch = FetchType.LAZY)
     private List<BagMaterials> bagMaterials = new ArrayList<>();
 
 

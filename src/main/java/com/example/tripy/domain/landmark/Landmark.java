@@ -3,6 +3,7 @@ package com.example.tripy.domain.landmark;
 import com.example.tripy.domain.city.City;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +32,7 @@ public class Landmark extends BaseTimeEntity {
 
     private Double longitude;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City city;
 

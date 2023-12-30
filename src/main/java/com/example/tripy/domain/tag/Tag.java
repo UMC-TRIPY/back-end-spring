@@ -3,6 +3,7 @@ package com.example.tripy.domain.tag;
 import com.example.tripy.domain.posttag.PostTag;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +27,7 @@ public class Tag extends BaseTimeEntity {
     @NotNull
     private String tagName;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<PostTag> postTags = new ArrayList<>();
 
 

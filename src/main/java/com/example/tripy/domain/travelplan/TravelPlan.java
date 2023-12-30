@@ -31,23 +31,23 @@ public class TravelPlan extends BaseTimeEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date arrival;
 
-    @OneToMany(mappedBy = "travelPlan")
+    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
     private List<CityPlan> cityPlans = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travelPlan")
+    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
     private List<Bag> bags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travelPlan")
+    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
     private List<PlanFriend> planFriends = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "travelPlan")
+    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travelPlan")
+    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
     private List<TravelTimePlan> travelTimePlans = new ArrayList<>();
 
 }

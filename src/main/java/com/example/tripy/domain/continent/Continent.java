@@ -2,6 +2,7 @@ package com.example.tripy.domain.continent;
 
 import com.example.tripy.domain.country.Country;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class Continent {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "continent")
+    @OneToMany(mappedBy = "continent", fetch = FetchType.LAZY)
     private List<Country> countries = new ArrayList<>();
     
 

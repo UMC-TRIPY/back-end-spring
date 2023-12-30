@@ -7,6 +7,7 @@ import com.example.tripy.domain.countrymaterial.CountryMaterial;
 import com.example.tripy.domain.currency.Currency;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,21 +36,21 @@ public class Country {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<City> cities = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "continent_id")
     private Continent continent;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<Conversation> conversations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<CountryMaterial> countryMaterials = new ArrayList<>();
     
 

@@ -7,6 +7,7 @@ import com.example.tripy.domain.post.Post;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,22 +48,22 @@ public class User extends BaseTimeEntity {
 
     private Long naverToken;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Bag> bags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromUser")
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY)
     private List<Friend> sentRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toUser")
+    @OneToMany(mappedBy = "toUser", fetch = FetchType.LAZY)
     private List<Friend> receivedRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PlanFriend> planFriends = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<TravelPlan> travelPlans = new ArrayList<>();
 
 

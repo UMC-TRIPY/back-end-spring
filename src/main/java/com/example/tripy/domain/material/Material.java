@@ -5,6 +5,7 @@ import com.example.tripy.domain.countrymaterial.CountryMaterial;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,10 +29,10 @@ public class Material extends BaseTimeEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BagMaterials> bagMaterials = new ArrayList<>();
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CountryMaterial> countryMaterials = new ArrayList<>();
 
 

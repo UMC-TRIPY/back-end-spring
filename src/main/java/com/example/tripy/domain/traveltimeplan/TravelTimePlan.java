@@ -52,7 +52,7 @@ public class TravelTimePlan extends BaseTimeEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
     private TravelPlan travelPlan;
 
