@@ -1,6 +1,6 @@
 package com.example.tripy.domain.friend;
 
-import com.example.tripy.domain.user.User;
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,12 +25,12 @@ public class Friend extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_user_id")
-    private User fromUser;
+    @JoinColumn(name = "from_member_id")
+    private Member fromMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_user_id")
-    private User toUser;
+    @JoinColumn(name = "to_member_id")
+    private Member toMember;
 
     private Boolean isFriend;
 

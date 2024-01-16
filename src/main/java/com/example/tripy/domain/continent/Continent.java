@@ -28,8 +28,4 @@ public class Continent {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "continent", fetch = FetchType.LAZY)
-    private List<Country> countries = new ArrayList<>();
-    
-
 }
