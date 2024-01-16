@@ -2,6 +2,7 @@ package com.example.tripy.domain.currency;
 
 import com.example.tripy.domain.currency.dto.CurrencyResponseDto;
 import com.example.tripy.domain.post.dto.PostResponseDto;
+import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,15 @@ public class CurrencyController {
      * [GET] 전체 환율 조회
      */
     @GetMapping
-    public ResponseEntity<List<CurrencyResponseDto>> getCurrencyList(){
-        return ResponseEntity.ok(currencyService.getCurrencyList());
+    public ApiResponse<List<CurrencyResponseDto>> getCurrencyList(){
+        return ApiResponse.onSuccess(currencyService.getCurrencyList());
     }
 
     /**
      * [GET] 나라별 환율 조회
      */
     @GetMapping("/{countryId}")
-    public ResponseEntity<CurrencyResponseDto> getCurrencyByCountry(@PathVariable Long countryId){
-        return ResponseEntity.ok(currencyService.getCurrencyByCountryId(countryId));
+    public ApiResponse<CurrencyResponseDto> getCurrencyByCountry(@PathVariable Long countryId){
+        return ApiResponse.onSuccess(currencyService.getCurrencyByCountryId(countryId));
     }
 }

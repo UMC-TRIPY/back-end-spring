@@ -24,10 +24,20 @@ public class CurrencyResponseDto {
     public static CurrencyResponseDto toDTO(Currency entity){
         return CurrencyResponseDto.builder()
             .id(entity.getId())
+            .deal(entity.getDeal())
             .currencyUnit(entity.getCurrencyUnit())
             .currencyName(entity.getCurrencyName())
-            .deal(entity.getDeal())
             .countryName(entity.getCountryName())
+            .build();
+    }
+
+    public static CurrencyResponseDto euroToDto(Currency entity, String countryName){
+        return CurrencyResponseDto.builder()
+            .id(entity.getId())
+            .deal(entity.getDeal())
+            .currencyUnit(entity.getCurrencyUnit())
+            .currencyName(entity.getCurrencyName())
+            .countryName(countryName)
             .build();
     }
 }

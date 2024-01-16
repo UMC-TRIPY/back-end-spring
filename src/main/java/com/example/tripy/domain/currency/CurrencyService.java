@@ -5,6 +5,7 @@ import com.example.tripy.domain.country.CountryRepository;
 import com.example.tripy.domain.currency.dto.CurrencyResponseDto;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class CurrencyService {
 
     public List<CurrencyResponseDto> getCurrencyList() {
         List<Currency> currencyList = currencyRepository.findAll();
+
         return currencyList.stream()
             .map(CurrencyResponseDto::toDTO)
             .collect(Collectors.toList());
@@ -29,10 +31,15 @@ public class CurrencyService {
         Country country = countryRepository.findById(countryId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_COUNTRY));
 
-        Currency currency = currencyRepository.findByCountryName(country.getName())
-            .orElseThrow(() -> new GeneralException(
-                ErrorStatus._EMPTY_CURRENCY));
+        String countryName = country.getName();
 
-        return CurrencyResponseDto.toDTO(currency);
+        if(countryName.equals("스페인") || countryName.equals("프랑스")){
+            countryName = "유로";
+        }
+
+        Currency currency = currencyRepository.findByCountryName(countryName)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CURRENCY));
+
+        return CurrencyResponseDto.euroToDto(currency, countryName);
     }
 }
