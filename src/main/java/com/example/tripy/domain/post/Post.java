@@ -56,7 +56,7 @@ public class Post extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "city_id")
     private City city;
 
 
