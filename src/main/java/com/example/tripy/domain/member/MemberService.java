@@ -1,9 +1,9 @@
-package com.example.tripy.domain.user;
+package com.example.tripy.domain.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class MemberService {
 }

@@ -41,17 +41,10 @@ public class City extends BaseTimeEntity{
     @NotNull
     private Double longitude;
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<CityPlan> cityplans = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<Landmark> landmarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<Post> posts = new ArrayList<>();
 
 }

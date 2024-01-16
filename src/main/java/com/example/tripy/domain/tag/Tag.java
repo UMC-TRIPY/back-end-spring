@@ -27,9 +27,6 @@ public class Tag extends BaseTimeEntity {
     @NotNull
     private String tagName;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
-    private List<PostTag> postTags = new ArrayList<>();
-
     //태그된 횟수
 
 }
