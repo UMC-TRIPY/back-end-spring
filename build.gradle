@@ -38,12 +38,6 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
-    //oauth2-client
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    //Oauth 서버와의 통신을 위한 webclient
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    //jwt
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 }
 
