@@ -5,7 +5,7 @@ import com.example.tripy.domain.cityplan.CityPlan;
 import com.example.tripy.domain.planfriend.PlanFriend;
 import com.example.tripy.domain.post.Post;
 import com.example.tripy.domain.traveltimeplan.TravelTimePlan;
-import com.example.tripy.domain.user.User;
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -31,23 +31,9 @@ public class TravelPlan extends BaseTimeEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date arrival;
 
-    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
-    private List<CityPlan> cityPlans = new ArrayList<>();
-
-    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
-    private List<Bag> bags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
-    private List<PlanFriend> planFriends = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "travelPlan", fetch = FetchType.LAZY)
-    private List<TravelTimePlan> travelTimePlans = new ArrayList<>();
 
 }

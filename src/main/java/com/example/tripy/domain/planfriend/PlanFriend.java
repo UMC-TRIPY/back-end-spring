@@ -1,7 +1,7 @@
 package com.example.tripy.domain.planfriend;
 
 import com.example.tripy.domain.travelplan.TravelPlan;
-import com.example.tripy.domain.user.User;
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +31,6 @@ public class PlanFriend extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
 }

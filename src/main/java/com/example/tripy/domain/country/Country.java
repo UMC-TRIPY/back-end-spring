@@ -36,8 +36,6 @@ public class Country {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private List<City> cities = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "currency_id")
@@ -47,11 +45,5 @@ public class Country {
     @JoinColumn(name = "continent_id")
     private Continent continent;
 
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private List<Conversation> conversations = new ArrayList<>();
-
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private List<CountryMaterial> countryMaterials = new ArrayList<>();
-    
 
 }

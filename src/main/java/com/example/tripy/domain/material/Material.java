@@ -29,12 +29,6 @@ public class Material extends BaseTimeEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BagMaterials> bagMaterials = new ArrayList<>();
-
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CountryMaterial> countryMaterials = new ArrayList<>();
-
 
 
 }

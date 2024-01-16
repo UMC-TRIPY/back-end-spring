@@ -5,7 +5,7 @@ import com.example.tripy.domain.post.dto.PostCreateRequestDto;
 import com.example.tripy.domain.postfile.PostFile;
 import com.example.tripy.domain.posttag.PostTag;
 import com.example.tripy.domain.travelplan.TravelPlan;
-import com.example.tripy.domain.user.User;
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,13 +20,11 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @AllArgsConstructor
@@ -54,18 +52,13 @@ public class Post extends BaseTimeEntity {
     private Integer thumbs;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "member_id")
     private City city;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PostFile> postFiles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PostTag> postTags = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
