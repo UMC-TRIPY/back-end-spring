@@ -39,10 +39,10 @@ public class PostController {
     /**
      * [GET] 도시가 속한 나라별 전체 글 조회
      */
-    @GetMapping("/{cityId}")
-    public ResponseEntity<List<PostResponseDto>> getPostListByCity(@PathVariable Long cityId){
-        return ResponseEntity.ok(postService.getPostList(cityId));
-    }
+//    @GetMapping("/{cityId}")
+//    public ResponseEntity<List<PostResponseDto>> getPostListByCity(@PathVariable Long cityId){
+//        return ResponseEntity.ok(postService.getPostList(cityId));
+//    }
 
     /**
      * [GET] 특정 글 상세 조회
