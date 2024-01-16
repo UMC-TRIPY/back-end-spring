@@ -29,8 +29,7 @@ public class TravelTimePlan extends BaseTimeEntity {
     @NotNull
     private String title;
 
-    @NotNull
-    private int column;
+    //private int column;
 
     @NotNull
     private LocalTime departure;
