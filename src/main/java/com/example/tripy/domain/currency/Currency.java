@@ -25,14 +25,15 @@ public class Currency extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long countryId;
+    private String currencyUnit;
 
-    private String currencyKo;
+    private String currencyName;
 
-    private String currencyEn;
+    private float deal;
+
+    private String countryName;
 
     @OneToOne(mappedBy = "currency")
     private Country country;
-
 
 }

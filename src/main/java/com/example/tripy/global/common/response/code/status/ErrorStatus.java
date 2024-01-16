@@ -20,8 +20,15 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
-    _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다.")
+    _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
+
+    //통화 관련
+    _EMPTY_CURRENCY(HttpStatus.CONFLICT, "CUR_001", "환율정보가 존재하지 않습니다."),
+
+    //나라 관련
+    _EMPTY_COUNTRY(HttpStatus.CONFLICT, "CTR_001", "국가정보가 존재하지 않습니다.")
     ;
+
 
     private final HttpStatus httpStatus;
     private final String code;
