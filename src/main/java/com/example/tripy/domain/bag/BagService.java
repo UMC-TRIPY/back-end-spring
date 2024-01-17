@@ -23,19 +23,25 @@ public class BagService {
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
     public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
         List<BagSimpleInfo> bagSimpleInfos = new ArrayList<>();
+        List<String> cities = new ArrayList<>();
 
         // 각각의 Bag 들에 대해 CityPlan을 받아와 연관 관계를 통해 city 이름을 저장
         for (Bag bag : bags) {
-            CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(bag.getTravelPlan());
-            String cityName = cityPlan.getCity().getName();
+            //CityPlan을 모두 가져와 해당 CitPlan에 해당하는 City들을 List<String>에 저장
+            List<CityPlan> cityPlans = cityPlanRepository.findAllByTravelPlan(bag.getTravelPlan());
+
+            for(CityPlan cityPlan : cityPlans){
+                cities.add(cityPlan.getCity().getName());
+            }
             bagSimpleInfos.add(
                 new BagSimpleInfo(bag.getTravelPlan().getDeparture(), bag.getTravelPlan()
-                    .getArrival(), cityName));
+                    .getArrival(), cities));
         }
 
         return bagSimpleInfos;
     }
 
+    // 내 여행 가방 모두 불러오기
     public PageResponseDto<List<BagSimpleInfo>> getBagsList(int page, int size, Long memberId) {
 
         Pageable pageable = PageRequest.of(page, size);
