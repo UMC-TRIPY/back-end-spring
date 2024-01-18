@@ -18,12 +18,14 @@ public class BagResponseDto {
         private Date departure;
         private Date arrival;
         private List<String> cities;
+        private Long travelPlanId;
 
         @Builder
         public BagSimpleInfo(List<String> cities, TravelPlan travelPlan) {
             this.departure = travelPlan.getDeparture();
             this.arrival = travelPlan.getArrival();
             this.cities = cities;
+            this.travelPlanId = travelPlan.getId();
         }
 
     }
