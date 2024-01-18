@@ -35,7 +35,7 @@ public class BagService {
             }
             bagSimpleInfos.add(
                 new BagSimpleInfo(bag.getTravelPlan().getDeparture(), bag.getTravelPlan()
-                    .getArrival(), cities));
+                    .getArrival(), cities,bag.getTravelPlan().getId()));
         }
 
         return bagSimpleInfos;
