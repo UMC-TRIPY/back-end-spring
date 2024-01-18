@@ -23,10 +23,10 @@ public class BagService {
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
     public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
         List<BagSimpleInfo> bagSimpleInfos = new ArrayList<>();
-        List<String> cities = new ArrayList<>();
 
         // 각각의 Bag 들에 대해 CityPlan을 받아와 연관 관계를 통해 city 이름을 저장
         for (Bag bag : bags) {
+            List<String> cities = new ArrayList<>();
             //CityPlan을 모두 가져와 해당 CitPlan에 해당하는 City들을 List<String>에 저장
             List<CityPlan> cityPlans = cityPlanRepository.findAllByTravelPlan(bag.getTravelPlan());
 
