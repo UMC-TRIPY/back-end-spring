@@ -2,6 +2,8 @@ package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
+import com.example.tripy.domain.member.Member;
+import com.example.tripy.domain.travelplan.TravelPlanRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -18,6 +20,7 @@ public class BagService {
 
     private final BagRepository bagRepository;
     private final CityPlanRepository cityPlanRepository;
+    private final TravelPlanRepository travelPlanRepository;
 
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
     public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
@@ -52,8 +55,16 @@ public class BagService {
     }
 
     @Transactional
-    public String createBag(Long memberId, Long travelPlanId) {
+    public String createBag(Member member, Long travelPlanId) {
 
+        Bag bag = Bag.builder()
+            .bagName("캐리어")
+            .content("test")
+            .member(member)
+            .travelPlan(travelPlanRepository.getReferenceById(travelPlanId))
+            .build();
+
+        bagRepository.save(bag);
         return "가방 생성 완료";
     }
 

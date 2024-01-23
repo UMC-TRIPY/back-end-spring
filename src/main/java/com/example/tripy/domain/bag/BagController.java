@@ -1,6 +1,8 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
+import com.example.tripy.domain.member.Member;
+import com.example.tripy.domain.member.enums.SocialType;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
@@ -19,6 +21,10 @@ public class BagController {
 
     private final BagService bagService;
 
+    private Member member = Member.builder()
+        .nickName("송민혁").email("email@email.com").password("test")
+        .profileImgUrl("test").socialType(SocialType.KAKAO).build();
+
     /**
      * [GET] 내 여행 가방 모두 불러오기
      */
@@ -29,10 +35,10 @@ public class BagController {
         return ApiResponse.onSuccess(bagService.getBagsList(page, size, memberId));
     }
 
-    @PostMapping("/member/bag/{memberId}/{travelPlanId}")
-    public ApiResponse<String> createBag(@PathVariable(value = "memberId") Long memberId,
+    @PostMapping("/member/bag/{travelPlanId}")
+    public ApiResponse<String> createBag(Member member,
         @PathVariable(value = "travelPlanId") Long travelPlanId) {
-        return ApiResponse.onSuccess(bagService.createBag(memberId, travelPlanId));
+        return ApiResponse.onSuccess(bagService.createBag(member, travelPlanId));
     }
 
 }
