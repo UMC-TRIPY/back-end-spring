@@ -1,10 +1,8 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
-import com.example.tripy.domain.cityplan.CityPlan;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +20,23 @@ public class BagService {
 
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
     public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
-        List<BagSimpleInfo> bagSimpleInfos = new ArrayList<>();
+        return bags.stream()
+            .map(bag -> {
+                List<String> cities = cityPlanRepository.findAllByTravelPlan(bag.getTravelPlan())
+                    .stream()
+                    .map(cityPlan -> cityPlan.getCity().getName())
+                    .collect(Collectors.toList());
 
-        // 각각의 Bag 들에 대해 CityPlan을 받아와 연관 관계를 통해 city 이름을 저장
-        for (Bag bag : bags) {
-            List<String> cities = new ArrayList<>();
-            //CityPlan을 모두 가져와 해당 CitPlan에 해당하는 City들을 List<String>에 저장
-            List<CityPlan> cityPlans = cityPlanRepository.findAllByTravelPlan(bag.getTravelPlan());
-
-            for(CityPlan cityPlan : cityPlans){
-                cities.add(cityPlan.getCity().getName());
-            }
-            bagSimpleInfos.add(
-                new BagSimpleInfo(bag.getTravelPlan().getDeparture(), bag.getTravelPlan()
-                    .getArrival(), cities,bag.getTravelPlan().getId()));
-        }
-
-        return bagSimpleInfos;
+                return new BagSimpleInfo(
+                    bag.getTravelPlan().getDeparture(),
+                    bag.getTravelPlan().getArrival(),
+                    cities,
+                    bag.getTravelPlan().getId()
+                );
+            })
+            .collect(Collectors.toList());
     }
+
 
     // 내 여행 가방 모두 불러오기
     public PageResponseDto<List<BagSimpleInfo>> getBagsList(int page, int size, Long memberId) {
