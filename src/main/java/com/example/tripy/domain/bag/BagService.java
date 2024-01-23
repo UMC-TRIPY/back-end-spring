@@ -3,6 +3,7 @@ package com.example.tripy.domain.bag;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,10 @@ public class BagService {
                 .collect(Collectors.toList())));
     }
 
+    @Transactional
+    public String createBag(Long memberId, Long travelPlanId) {
+
+        return "가방 생성 완료";
+    }
 
 }
