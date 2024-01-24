@@ -31,6 +31,8 @@ public class TravelPlan extends BaseTimeEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date arrival;
 
+    private boolean bagExists; // 가방 존재 여부 확인
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
