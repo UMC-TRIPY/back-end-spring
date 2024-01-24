@@ -38,4 +38,8 @@ public class TravelPlan extends BaseTimeEntity {
     private Member member;
 
 
+    public void updateBagExists(){
+        //가방이 존재하지 않으면 true로 변경, 존재하면 false로 변경
+        this.bagExists = !this.bagExists;
+    }
 }
