@@ -26,8 +26,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _EMPTY_CURRENCY(HttpStatus.CONFLICT, "CUR_001", "환율정보가 존재하지 않습니다."),
 
     //나라 관련
-    _EMPTY_COUNTRY(HttpStatus.CONFLICT, "CTR_001", "국가정보가 존재하지 않습니다.")
-    ;
+    _EMPTY_COUNTRY(HttpStatus.CONFLICT, "CTR_001", "국가정보가 존재하지 않습니다."),
+
+    // TravelPlan 관련
+    _EMPTY_TRAVELPLAN(HttpStatus.NOT_FOUND, "TRAVEL_PLAN_001","존재하지 않는 여행 계획입니다.");
 
 
     private final HttpStatus httpStatus;

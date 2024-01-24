@@ -68,7 +68,8 @@ public class BagService {
             .bagName("캐리어")
             .content("test")
             .member(member)
-            .travelPlan(travelPlanRepository.getReferenceById(travelPlanId))
+            .travelPlan(travelPlanRepository.findById(travelPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVELPLAN)))
             .build();
 
         bagRepository.save(bag);
