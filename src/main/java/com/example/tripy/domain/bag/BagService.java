@@ -4,6 +4,7 @@ import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
+import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
@@ -61,19 +62,15 @@ public class BagService {
     @Transactional
     public String createBag(Long memberId, Long travelPlanId) {
 
+        //Member 관련 메서드가 추가되면 수정 예정
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-        Bag bag = Bag.builder()
-            .bagName("캐리어")
-            .content("test")
-            .member(member)
-            .travelPlan(travelPlanRepository.findById(travelPlanId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVELPLAN)))
-            .build();
+        TravelPlan travelPlan = travelPlanRepository.findByMemberAndId(member,travelPlanId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVELPLAN));
+        travelPlan.updateBagExists();
 
-        bagRepository.save(bag);
-        return "가방 생성 완료";
+        return "내 가방 목록에 추가 완료";
     }
 
 }
