@@ -66,8 +66,10 @@ public class BagService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-        TravelPlan travelPlan = travelPlanRepository.findByMemberAndId(member, travelPlanId)
-            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVELPLAN));
+        //bagExists 값이 False인 TravelPlan만 가능, 이미 가방이 존재하면 예외 처리
+        TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsFalse(member,
+                travelPlanId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._ALREADY_TRAVEL_PLAN_BAG_EXISTS));
         travelPlan.updateBagExists();
 
         return "내 가방 목록에 추가 완료";
