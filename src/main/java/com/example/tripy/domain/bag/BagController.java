@@ -21,9 +21,6 @@ public class BagController {
 
     private final BagService bagService;
 
-    private Member member = Member.builder()
-        .nickName("송민혁").email("email@email.com").password("test")
-        .profileImgUrl("test").socialType(SocialType.KAKAO).build();
 
     /**
      * [GET] 내 여행 가방 모두 불러오기
@@ -35,10 +32,9 @@ public class BagController {
         return ApiResponse.onSuccess(bagService.getBagsList(page, size, memberId));
     }
 
-    @PostMapping("/member/bag/{travelPlanId}")
-    public ApiResponse<String> createBag(Member member,
-        @PathVariable(value = "travelPlanId") Long travelPlanId) {
-        return ApiResponse.onSuccess(bagService.createBag(member, travelPlanId));
+    @PostMapping("/member/bag/{memberId}/{travelPlanId}")
+    public ApiResponse<String> createBag(@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
+        return ApiResponse.onSuccess(bagService.createBag(memberId, travelPlanId));
     }
 
 }

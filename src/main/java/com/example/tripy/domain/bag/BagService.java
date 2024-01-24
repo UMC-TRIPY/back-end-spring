@@ -3,8 +3,11 @@ package com.example.tripy.domain.bag;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.domain.member.Member;
+import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
+import com.example.tripy.global.common.response.code.status.ErrorStatus;
+import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ public class BagService {
     private final BagRepository bagRepository;
     private final CityPlanRepository cityPlanRepository;
     private final TravelPlanRepository travelPlanRepository;
+    private final MemberRepository memberRepository;
 
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
     public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
@@ -55,7 +59,10 @@ public class BagService {
     }
 
     @Transactional
-    public String createBag(Member member, Long travelPlanId) {
+    public String createBag(Long memberId, Long travelPlanId) {
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
         Bag bag = Bag.builder()
             .bagName("캐리어")
