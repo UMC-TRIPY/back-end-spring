@@ -66,7 +66,7 @@ public class BagService {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-        TravelPlan travelPlan = travelPlanRepository.findByMemberAndId(member,travelPlanId)
+        TravelPlan travelPlan = travelPlanRepository.findByMemberAndId(member, travelPlanId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVELPLAN));
         travelPlan.updateBagExists();
 

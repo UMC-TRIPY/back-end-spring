@@ -1,8 +1,6 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
-import com.example.tripy.domain.member.Member;
-import com.example.tripy.domain.member.enums.SocialType;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
@@ -36,7 +34,8 @@ public class BagController {
      * [POST] 여행 목록에서 여행 가방 생성하기
      */
     @PostMapping("/member/bag/{memberId}/{travelPlanId}")
-    public ApiResponse<String> createBag(@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
+    public ApiResponse<String> createBag(@PathVariable Long memberId,
+        @PathVariable(value = "travelPlanId") Long travelPlanId) {
         return ApiResponse.onSuccess(bagService.createBag(memberId, travelPlanId));
     }
 
