@@ -1,22 +1,14 @@
 package com.example.tripy.domain.member;
 
-import com.example.tripy.domain.bag.Bag;
-import com.example.tripy.domain.friend.Friend;
 import com.example.tripy.domain.member.enums.SocialType;
-import com.example.tripy.domain.planfriend.PlanFriend;
-import com.example.tripy.domain.post.Post;
-import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Member extends BaseTimeEntity {
 
 
@@ -43,7 +36,6 @@ public class Member extends BaseTimeEntity {
     private String profileImgUrl;
 
     private SocialType socialType;
-
 
 
 }
