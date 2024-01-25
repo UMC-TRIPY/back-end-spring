@@ -1,6 +1,6 @@
 package com.example.tripy.domain.bag;
 
-import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
@@ -22,45 +22,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class BagService {
 
-    private final BagRepository bagRepository;
     private final CityPlanRepository cityPlanRepository;
     private final TravelPlanRepository travelPlanRepository;
     private final MemberRepository memberRepository;
 
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
-    public List<BagSimpleInfo> setBagSimpleInfo(List<Bag> bags) {
-        return bags.stream()
-            .map(bag -> {
-                List<String> cities = cityPlanRepository.findAllByTravelPlan(bag.getTravelPlan())
+    public List<BagListSimpleInfo> setBagListSimpleInfo(List<TravelPlan> travelPlans) {
+        return travelPlans.stream()
+            .map(travelPlan -> {
+                List<String> cities = cityPlanRepository.findAllByTravelPlan(travelPlan)
                     .stream()
                     .map(cityPlan -> cityPlan.getCity().getName())
                     .collect(Collectors.toList());
 
-                return new BagSimpleInfo(
-                    bag.getTravelPlan().getDeparture(),
-                    bag.getTravelPlan().getArrival(),
+                return new BagListSimpleInfo(
+                    travelPlan.getDeparture(),
+                    travelPlan.getArrival(),
                     cities,
-                    bag.getTravelPlan().getId()
+                    travelPlan.getId()
                 );
             })
             .collect(Collectors.toList());
     }
 
 
-    // 내 여행 가방 모두 불러오기
-    public PageResponseDto<List<BagSimpleInfo>> getBagsList(int page, int size, Long memberId) {
+    // 내 일정에 맞는 가방 목록 모두 불러오기
+    public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size,
+        Long memberId) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Bag> result = bagRepository.findAllByMemberId(memberId, pageable);
+        Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(memberId,
+            pageable);
 
         return new PageResponseDto<>(result.getNumber(), result.getTotalPages(),
-            setBagSimpleInfo(result
+            setBagListSimpleInfo(result
                 .stream()
                 .collect(Collectors.toList())));
     }
 
     @Transactional
-    public String createBag(Long memberId, Long travelPlanId) {
+    public String updateBagExists(Long memberId, Long travelPlanId) {
 
         //Member 관련 메서드가 추가되면 수정 예정
         Member member = memberRepository.findById(memberId)
@@ -70,6 +71,7 @@ public class BagService {
         TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsFalse(member,
                 travelPlanId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._ALREADY_TRAVEL_PLAN_BAG_EXISTS));
+        // 해당 여행 일정은 가방 목록이 생성되도록 상태 변경
         travelPlan.updateBagExists();
 
         return "내 가방 목록에 추가 완료";

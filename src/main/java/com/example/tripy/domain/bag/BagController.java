@@ -1,6 +1,6 @@
 package com.example.tripy.domain.bag;
 
-import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
@@ -24,19 +24,19 @@ public class BagController {
      * [GET] 내 여행 가방 모두 불러오기
      */
     @GetMapping("/member/bag/{memberId}")
-    public ApiResponse<PageResponseDto<List<BagSimpleInfo>>> getBagsList(
+    public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
         @PathVariable(value = "memberId") Long memberId, @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size) {
-        return ApiResponse.onSuccess(bagService.getBagsList(page, size, memberId));
+        return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, memberId));
     }
 
     /**
-     * [POST] 여행 목록에서 여행 가방 생성하기
+     * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기
      */
     @PostMapping("/member/bag/{memberId}/{travelPlanId}")
-    public ApiResponse<String> createBag(@PathVariable Long memberId,
+    public ApiResponse<String> updateBagExists(@PathVariable Long memberId,
         @PathVariable(value = "travelPlanId") Long travelPlanId) {
-        return ApiResponse.onSuccess(bagService.createBag(memberId, travelPlanId));
+        return ApiResponse.onSuccess(bagService.updateBagExists(memberId, travelPlanId));
     }
 
 }

@@ -13,7 +13,7 @@ public class BagResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class BagSimpleInfo {
+    public static class BagListSimpleInfo {
 
         private Date departure;
         private Date arrival;
@@ -21,7 +21,7 @@ public class BagResponseDto {
         private Long travelPlanId;
 
         @Builder
-        public BagSimpleInfo(List<String> cities, TravelPlan travelPlan) {
+        public BagListSimpleInfo(List<String> cities, TravelPlan travelPlan) {
             this.departure = travelPlan.getDeparture();
             this.arrival = travelPlan.getArrival();
             this.cities = cities;
