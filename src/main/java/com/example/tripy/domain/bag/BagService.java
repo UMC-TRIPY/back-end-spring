@@ -61,7 +61,7 @@ public class BagService {
     }
 
     @Transactional
-    public String createBag(Long memberId, Long travelPlanId) {
+    public String updateBagExists(Long memberId, Long travelPlanId) {
 
         //Member 관련 메서드가 추가되면 수정 예정
         Member member = memberRepository.findById(memberId)
@@ -71,6 +71,7 @@ public class BagService {
         TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsFalse(member,
                 travelPlanId)
             .orElseThrow(() -> new GeneralException(ErrorStatus._ALREADY_TRAVEL_PLAN_BAG_EXISTS));
+        // 해당 여행 일정은 가방 목록이 생성되도록 상태 변경
         travelPlan.updateBagExists();
 
         return "내 가방 목록에 추가 완료";
