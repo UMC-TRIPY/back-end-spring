@@ -1,6 +1,6 @@
 package com.example.tripy.domain.bag;
 
-import com.example.tripy.domain.bag.dto.BagResponseDto.BagSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
@@ -27,7 +27,7 @@ public class BagService {
     private final MemberRepository memberRepository;
 
     // Bag에 대한 간단한 일정 정보 Dto에 매핑
-    public List<BagSimpleInfo> setBagListSimpleInfo(List<TravelPlan> travelPlans) {
+    public List<BagListSimpleInfo> setBagListSimpleInfo(List<TravelPlan> travelPlans) {
         return travelPlans.stream()
             .map(travelPlan -> {
                 List<String> cities = cityPlanRepository.findAllByTravelPlan(travelPlan)
@@ -35,7 +35,7 @@ public class BagService {
                     .map(cityPlan -> cityPlan.getCity().getName())
                     .collect(Collectors.toList());
 
-                return new BagSimpleInfo(
+                return new BagListSimpleInfo(
                     travelPlan.getDeparture(),
                     travelPlan.getArrival(),
                     cities,
@@ -47,7 +47,8 @@ public class BagService {
 
 
     // 내 일정에 맞는 가방 목록 모두 불러오기
-    public PageResponseDto<List<BagSimpleInfo>> getBagsList(int page, int size, Long memberId) {
+    public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size,
+        Long memberId) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(memberId,
