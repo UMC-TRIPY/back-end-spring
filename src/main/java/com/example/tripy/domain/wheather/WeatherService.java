@@ -2,12 +2,10 @@ package com.example.tripy.domain.wheather;
 
 import com.example.tripy.domain.city.City;
 import com.example.tripy.domain.city.CityRepository;
-import com.example.tripy.domain.wheather.dto.WheatherResponseDto;
 import com.example.tripy.domain.wheather.dto.WheatherResponseDto.WhetherResponseSimpleInfo;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
