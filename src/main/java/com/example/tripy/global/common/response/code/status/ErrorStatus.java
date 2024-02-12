@@ -28,6 +28,9 @@ public enum ErrorStatus implements BaseErrorCode {
     //나라 관련
     _EMPTY_COUNTRY(HttpStatus.CONFLICT, "CTR_001", "국가정보가 존재하지 않습니다."),
 
+    //도시 관련
+    _EMPTY_CITY(HttpStatus.NOT_FOUND, "CTY_001", "도시정보가 존재하지 않습니다."),
+
     // TravelPlan 관련
     _EMPTY_TRAVEL_PLAN(HttpStatus.NOT_FOUND, "TRAVEL_PLAN_001", "존재하지 않는 여행 계획입니다."),
     _ALREADY_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST, "TRAVEL_PLAN_002",
