@@ -39,7 +39,7 @@ public class Country {
     @JoinColumn(name = "continent_id")
     private Continent continent;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id")
     private Language language;
 
