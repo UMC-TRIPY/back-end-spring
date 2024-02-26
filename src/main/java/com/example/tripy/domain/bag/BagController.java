@@ -2,7 +2,7 @@ package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
-import com.example.tripy.domain.material.Material;
+import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
@@ -42,7 +42,7 @@ public class BagController {
 	}
 
 	@GetMapping("/material-name")
-	public ApiResponse<List<Material>> getCountryMaterials(
+	public ApiResponse<MaterialListByCountry> getCountryMaterials(
 		@RequestParam(value = "countryName") String countryName) {
 		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryName));
 	}
