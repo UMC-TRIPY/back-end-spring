@@ -78,6 +78,6 @@ public class PostService {
         postFileService.deleteFilesByPost(post);
         postTagService.deletePostTagsByPost(post);
 
-        postRepository.deleteById(postsId);
+        postRepository.delete(post);
     }
 }
