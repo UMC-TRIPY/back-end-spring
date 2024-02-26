@@ -12,12 +12,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class PostTag extends BaseTimeEntity {
 
@@ -32,9 +34,11 @@ public class PostTag extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
-    
 
+    public static PostTag toEntity(Post post, Tag tag) {
+        return PostTag.builder()
+            .post(post)
+            .tag(tag)
+            .build();
+    }
 }
-
-
-

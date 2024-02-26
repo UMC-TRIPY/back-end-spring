@@ -5,6 +5,7 @@ import com.example.tripy.global.utils.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class PostFile extends BaseTimeEntity {
 
     @Id
@@ -21,17 +23,18 @@ public class PostFile extends BaseTimeEntity {
     @NotNull
     private String url;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    private FileType type;
+    private FileType fileType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-
-
+    public static PostFile toEntity(Post post, String url, FileType fileType) {
+        return PostFile.builder()
+            .url(url)
+            .post(post)
+            .fileType(fileType)
+            .build();
+    }
 }
-
-
-
