@@ -27,4 +27,8 @@ public class PostTagService {
             postTagRepository.save(postTag);
         });
     }
+
+    public void deletePostTagsByPost(Post post) {
+        postTagRepository.deleteByPost(post);
+    }
 }

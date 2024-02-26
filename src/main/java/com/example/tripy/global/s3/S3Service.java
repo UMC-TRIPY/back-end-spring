@@ -82,4 +82,9 @@ public class S3Service {
     public void deleteFile(String fileName) {
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
+
+    public String parseFileName(String imgURl) {
+        String[] st = imgURl.split("/");
+        return st[st.length - 1];
+    }
 }

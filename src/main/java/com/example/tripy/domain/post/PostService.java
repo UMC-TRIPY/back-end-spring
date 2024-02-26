@@ -12,6 +12,7 @@ import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
+import com.example.tripy.global.s3.S3Service;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +67,21 @@ public class PostService {
 
     private void addTags(Post post, List<Long> tagIds) {
         postTagService.savePostTag(post, tagIds);
+    }
+
+    public void deletePost(Long postsId) {
+        Member member = memberRepository.findById(1L)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+        postRepository.findById(postsId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        Post post = postRepository.findById(postsId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        postFileService.deleteFilesByPost(post);
+        postTagService.deletePostTagsByPost(post);
+
+        postRepository.deleteById(postsId);
     }
 }
