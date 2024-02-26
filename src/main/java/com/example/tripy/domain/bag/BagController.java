@@ -25,7 +25,7 @@ public class BagController {
 	/**
 	 * [GET] 내 여행 가방 모두 불러오기
 	 */
-	@GetMapping("/member/bag/{memberId}")
+	@GetMapping("/members/bags/{memberId}")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
 		@PathVariable(value = "memberId") Long memberId, @RequestParam(value = "page") int page,
 		@RequestParam(value = "size") int size) {
@@ -35,7 +35,7 @@ public class BagController {
 	/**
 	 * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기
 	 */
-	@PostMapping("/member/bag/{memberId}/{travelPlanId}")
+	@PostMapping("/members/bags/{memberId}/{travelPlanId}")
 	public ApiResponse<String> updateBagExists(@PathVariable Long memberId,
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
 		return ApiResponse.onSuccess(bagService.updateBagExists(memberId, travelPlanId));
