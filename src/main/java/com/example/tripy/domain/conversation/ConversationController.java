@@ -21,10 +21,5 @@ public class ConversationController {
         @PathVariable("country-id") Long countryId) {
         return ResponseEntity.ok(conversationService.findConversationListByCountry(countryId));
     }
-
-    @GetMapping("/api/conversation")
-    public ResponseEntity<String> updateConversation(){
-        s3Service.getConversation();
-        return ResponseEntity.ok("성공");
-    }
+    
 }
