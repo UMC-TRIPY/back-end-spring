@@ -17,7 +17,6 @@ public class ConversationResponseDto {
 
         private String koreanSentences;
         private String translatedSentences;
-        private Language language;
         private Long countryId;
         private String pronunciation;
 
@@ -25,7 +24,6 @@ public class ConversationResponseDto {
             return ConversationDetailResponse.builder()
                 .koreanSentences(conversation.getKorean())
                 .translatedSentences(conversation.getTranslation())
-                .language(conversation.getCountry().getLanguage())
                 .countryId(conversation.getCountry().getId())
                 .pronunciation(conversation.getPronunciation())
                 .build();
