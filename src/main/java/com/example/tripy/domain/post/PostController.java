@@ -19,7 +19,7 @@ public class PostController {
     /**
      * [POST] 게시글 작성
      */
-    @PostMapping("/posts")
+    @PostMapping("api/posts")
     public ApiResponse<String> createPost(
         @RequestBody CreatePostRequest createPostRequest,
         @RequestParam(required = false) Long travelPlanId,
@@ -31,7 +31,7 @@ public class PostController {
     /**
      * [DELETE] 게시글 삭제
      */
-    @DeleteMapping("/posts/{postsId}")
+    @DeleteMapping("api/posts/{postsId}")
     public ApiResponse<String> deletePost(
         @PathVariable   Long postsId) {
         postService.deletePost(postsId);
