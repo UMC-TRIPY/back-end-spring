@@ -1,66 +1,83 @@
 package com.example.tripy.domain.post;
 
+import com.example.tripy.domain.city.City;
 import com.example.tripy.domain.city.CityRepository;
-import com.example.tripy.domain.post.dto.PostCreateRequestDto;
-import com.example.tripy.domain.post.dto.PostResponseDto;
+import com.example.tripy.domain.member.Member;
+import com.example.tripy.domain.member.MemberRepository;
+import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.postfile.FileType;
+import com.example.tripy.domain.postfile.PostFileService;
+import com.example.tripy.domain.posttag.PostTagService;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
+import com.example.tripy.global.common.response.code.status.ErrorStatus;
+import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
+
     private final PostRepository postRepository;
     private final TravelPlanRepository travelPlanRepository;
     private final CityRepository cityRepository;
+    private final PostFileService postFileService;
+    private final MemberRepository memberRepository;
+    private final PostTagService postTagService;
 
-    // TODO: 2024/01/01 예외처리 및 MultipartFile 처리
     @Transactional
-    public void addPost(PostCreateRequestDto postCreateRequestDto){
-        try{
-            TravelPlan travelPlan = travelPlanRepository.findById(postCreateRequestDto.getTravelPlanId()).get();
-            Post post = Post.toEntity(postCreateRequestDto, travelPlan);
-            postRepository.save(post);
+    public void addPost(CreatePostRequest createPostRequest, Long travelPlanId, Long cityId) {
+
+        Member member = memberRepository.findById(1L)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+        TravelPlan travelPlan = null;
+        if (travelPlanId != null) {
+            travelPlan = travelPlanRepository.findById(travelPlanId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
         }
-       catch (Exception e){
-       }
+        City city = cityRepository.findById(cityId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
+
+        Post post = Post.toEntity(createPostRequest, member, city, travelPlan);
+
+        postRepository.save(post);
+        if(createPostRequest.getImageUrls() != null) {
+            addImages(post, createPostRequest.getImageUrls());
+        }
+        if(createPostRequest.getFileUrls() != null) {
+            addFiles(post, createPostRequest.getFileUrls());
+        }
+        if(createPostRequest.getTagIds() != null) {
+            addTags(post, createPostRequest.getTagIds());
+        }
     }
 
-    /**
-     * 전체 글 조회
-     */
-
-    public List<PostResponseDto> getPostList(){
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
-                .map(PostResponseDto::toDTO)
-                .collect(Collectors.toList());
+    private void addImages(Post post, List<String> imageUrls) {
+        postFileService.saveFilesByType(post, imageUrls, FileType.IMAGE);
     }
 
-//    /**
-//     * 도시가 포함된 나라별 전체 글 조회
-//     */
-//    public List<PostResponseDto> getPostList(Long cityId){
-//        City city = cityRepository.findById(cityId).get();
-//        Long countryId = city.getCountry().getId();
-//        List<Post> posts = postRepository.findByCountry(countryId);
-//
-//        return posts.stream()
-//                .map(PostResponseDto::toDTO)
-//                .collect(Collectors.toList());
-//    }
-
-    /**
-     * 글 하나 조회
-     */
-    public PostResponseDto getPostDetail(Long postId){
-        Post post = postRepository.findById(postId).get();
-        post.viewCountUp();
-        return PostResponseDto.toDTO(post);
+    private void addFiles(Post post, List<String> fileUrls) {
+        postFileService.saveFilesByType(post, fileUrls, FileType.FILE);
     }
 
+    private void addTags(Post post, List<Long> tagIds) {
+        postTagService.savePostTag(post, tagIds);
+    }
+
+    public void deletePost(Long postsId) {
+        Member member = memberRepository.findById(1L)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+        Post post = postRepository.findById(postsId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        postFileService.deleteFilesByPost(post);
+        postTagService.deletePostTagsByPost(post);
+
+        postRepository.delete(post);
+    }
 }
