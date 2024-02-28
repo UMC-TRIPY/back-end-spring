@@ -37,8 +37,16 @@ public enum ErrorStatus implements BaseErrorCode {
         "이미 가방이 존재하는 여행 계획입니다."),
 
     //S3 관련
-    _FAULT_S3_KEY(HttpStatus.NOT_FOUND, "S3_001", "잘못된 S3 정보입니다.");
+    _FAULT_S3_KEY(HttpStatus.NOT_FOUND, "S3_001", "잘못된 S3 정보입니다."),
 
+    //파일 업로드 관련
+    _FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_001", "파일 업로드에 실패했습니다."),
+
+    //태그 관련
+    _EMPTY_TAG(HttpStatus.CONFLICT, "TAG_001", "태그가 존재하지 않습니다."),
+
+    //게시글 관련
+    _EMPTY_POST(HttpStatus.CONFLICT, "POST_001", "게시글이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

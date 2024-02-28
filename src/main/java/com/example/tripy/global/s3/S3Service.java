@@ -74,7 +74,7 @@ public class S3Service {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
-    public List<S3Result> uploadFile(List<MultipartFile> multipartFiles) {
+    public List<S3Result> uploadFiles(List<MultipartFile> multipartFiles) {
         List<S3Result> fileList = new ArrayList<>();
 
         // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileList에 추가
@@ -97,9 +97,25 @@ public class S3Service {
         return fileList;
     }
 
+    public S3Result uploadFile(MultipartFile multipartFile) {
+        String fileName = createFileName(multipartFile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+        }
+        return new S3Result(amazonS3Client.getUrl(bucket, fileName).toString());
+    }
+
     public void deleteFile(String fileName) {
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
+
 
     @Scheduled(cron = "0 0 2 * * *")
     public void getConversation() {
@@ -182,5 +198,9 @@ public class S3Service {
         conversationRepository.save(Conversation.toEntity(
             new ConversationCreateRequest(korean, foreignLanguage, pronunciation, country)
         ));
+
+    public String parseFileName(String imgURl) {
+        String[] st = imgURl.split("/");
+        return st[st.length - 1];
     }
 }
