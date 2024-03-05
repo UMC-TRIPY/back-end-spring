@@ -198,6 +198,7 @@ public class S3Service {
         conversationRepository.save(Conversation.toEntity(
             new ConversationCreateRequest(korean, foreignLanguage, pronunciation, country)
         ));
+    }
 
     public String parseFileName(String imgURl) {
         String[] st = imgURl.split("/");
