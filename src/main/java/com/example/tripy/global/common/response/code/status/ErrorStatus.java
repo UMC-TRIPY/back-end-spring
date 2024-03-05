@@ -36,6 +36,9 @@ public enum ErrorStatus implements BaseErrorCode {
     _ALREADY_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST, "TRAVEL_PLAN_002",
         "이미 가방이 존재하는 여행 계획입니다."),
 
+    //S3 관련
+    _FAULT_S3_KEY(HttpStatus.NOT_FOUND, "S3_001", "잘못된 S3 정보입니다."),
+
     //파일 업로드 관련
     _FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_001", "파일 업로드에 실패했습니다."),
 
