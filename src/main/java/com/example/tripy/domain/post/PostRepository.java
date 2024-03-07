@@ -16,7 +16,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByRankTopOrderByRankNotNullCountryId(@Param("countryId") Long countryId, Pageable pageable);
 
     @Query("SELECT p FROM Post p ORDER BY p.recommendationCount DESC")
-    Page<Post> findByTopRecommended(Pageable pageable);
+    Page<Post> findByTopRecommendedNullCountryId(Pageable pageable);
 
-    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.country.id = :countryId ORDER BY p.recommendationCount DESC")
+    Page<Post> findByTopRecommendedNotNullCountryId(@Param("countryId") Long countryId, Pageable pageable);
+
+    @Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
+    Page<Post> findAllByOrderByCreatedAtDescNullCountryId(Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.country.id = :countryId ORDER BY p.createdAt DESC")
+    Page<Post> findAllByCountryIdAndOrderByCreatedAtDescNotNullCountryId(@Param("countryId") Long countryId, Pageable pageable);
 }

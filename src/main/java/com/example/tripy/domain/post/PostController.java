@@ -58,9 +58,10 @@ public class PostController {
      */
     @GetMapping("api/posts/top-recommended")
     public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostTopRecommended(
+        @RequestParam Long countryId,
         @RequestParam int page, @RequestParam int size
     ) {
-        return ApiResponse.onSuccess(postService.findPostsTopRecommended(page, size));
+        return ApiResponse.onSuccess(postService.findPostsTopRecommended(countryId, page, size));
     }
 
     /**
@@ -68,8 +69,9 @@ public class PostController {
      */
     @GetMapping("api/posts/latest")
     public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostLatest(
+        @RequestParam Long countryId,
         @RequestParam int page, @RequestParam int size
     ) {
-        return ApiResponse.onSuccess(postService.findPostsLatest(page, size));
+        return ApiResponse.onSuccess(postService.findPostsLatest(countryId, page, size));
     }
 }

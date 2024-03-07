@@ -107,9 +107,18 @@ public class PostService {
     }
 
     //추천순 조회
-    public PageResponseDto<List<GetPostSimpleInfo>> findPostsTopRecommended(int page, int size) {
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsTopRecommended(Long countryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Post> postList = postRepository.findByTopRecommended(pageable);
+        Page<Post> postList;
+
+        //전체 조회
+        if(countryId == null) {
+            postList = postRepository.findByTopRecommendedNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findByTopRecommendedNotNullCountryId(countryId, pageable);
+        }
 
         List<GetPostSimpleInfo> postDtoList = postList.stream()
             .map(GetPostSimpleInfo::toDto)
@@ -120,9 +129,18 @@ public class PostService {
     }
 
     //최신순 조회
-    public PageResponseDto<List<GetPostSimpleInfo>> findPostsLatest(int page, int size) {
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsLatest(Long countryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Post> postList = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+        Page<Post> postList;
+
+        //전체 조회
+        if(countryId == null) {
+            postList = postRepository.findAllByOrderByCreatedAtDescNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findByTopRecommendedNotNullCountryId(countryId, pageable);
+        }
 
         List<GetPostSimpleInfo> postDtoList = postList.stream()
             .map(GetPostSimpleInfo::toDto)
