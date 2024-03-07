@@ -86,11 +86,11 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    //TOP 10 조회
-    public List<GetPostSimpleInfo> findPostsTopten() {
+    //TOP 조회
+    public List<GetPostSimpleInfo> findPostsTop(int num) {
 
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Post> postList = postRepository.findByRankToptenOrderByRank(pageable);
+        Pageable pageable = PageRequest.of(0, num);
+        List<Post> postList = postRepository.findByRankTopOrderByRank(pageable);
 
         return postList.stream()
             .map(GetPostSimpleInfo::toDto)
@@ -110,5 +110,17 @@ public class PostService {
         postDtoList);
     }
 
+    //최신순 조회
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsLatest(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postList = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+
+        List<GetPostSimpleInfo> postDtoList = postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
+
+        return new PageResponseDto<>(postList.getNumber(), postList.getTotalPages(),
+            postDtoList);
+    }
 
 }

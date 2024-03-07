@@ -9,8 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.rank > 0 ORDER BY p.rank ASC")
-    List<Post> findByRankToptenOrderByRank(Pageable pageable);
+    List<Post> findByRankTopOrderByRank(Pageable pageable);
 
     @Query("SELECT p FROM Post p ORDER BY p.recommendationCount DESC")
     Page<Post> findByTopRecommended(Pageable pageable);
+
+    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

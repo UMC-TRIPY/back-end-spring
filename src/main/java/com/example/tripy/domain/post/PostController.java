@@ -43,11 +43,13 @@ public class PostController {
     }
 
     /**
-     * [GET] 인기글 TOP 10 조회
+     * [GET] 인기글 TOP 조회
      */
-    @GetMapping("api/posts/top-ten")
-    public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten() {
-        return ApiResponse.onSuccess(postService.findPostsTopten());
+    @GetMapping("api/posts/top")
+    public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten(
+        @RequestParam int num
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsTop(num));
     }
 
     /**
@@ -58,5 +60,15 @@ public class PostController {
         @RequestParam int page, @RequestParam int size
     ) {
         return ApiResponse.onSuccess(postService.findPostsTopRecommended(page, size));
+    }
+
+    /**
+     * [GET] 전체글 최신 순 조회
+     */
+    @GetMapping("api/posts/latest")
+    public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostLatest(
+        @RequestParam int page, @RequestParam int size
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsLatest(page, size));
     }
 }
