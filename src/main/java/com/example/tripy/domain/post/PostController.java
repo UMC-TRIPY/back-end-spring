@@ -1,9 +1,12 @@
 package com.example.tripy.domain.post;
 
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
 import com.example.tripy.global.common.response.ApiResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,13 @@ public class PostController {
         @PathVariable   Long postsId) {
         postService.deletePost(postsId);
         return ApiResponse.onSuccess("글 삭제에 성공했습니다.");
+    }
+
+    /**
+     * [GET] 인기글 TOP 10 조회
+     */
+    @GetMapping("api/posts/top-ten")
+    public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten() {
+        return ApiResponse.onSuccess(postService.findPostsTopten());
     }
 }

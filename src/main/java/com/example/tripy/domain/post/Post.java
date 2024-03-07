@@ -42,6 +42,9 @@ public class Post extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer recommendationCount;
 
+    @ColumnDefault("0")
+    private int rank;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

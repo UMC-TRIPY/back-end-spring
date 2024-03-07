@@ -5,6 +5,7 @@ import com.example.tripy.domain.city.CityRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
 import com.example.tripy.domain.postfile.FileType;
 import com.example.tripy.domain.postfile.PostFileService;
 import com.example.tripy.domain.posttag.PostTagService;
@@ -15,6 +16,8 @@ import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -79,5 +82,15 @@ public class PostService {
         postTagService.deletePostTagsByPost(post);
 
         postRepository.delete(post);
+    }
+
+    public List<GetPostSimpleInfo> findPostsTopten() {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Post> postList = postRepository.findByRankToptenOrderByRank(pageable);
+
+        return postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
     }
 }
