@@ -11,11 +11,13 @@ import com.example.tripy.domain.postfile.PostFileService;
 import com.example.tripy.domain.posttag.PostTagService;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
+import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -84,6 +86,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    //TOP 10 조회
     public List<GetPostSimpleInfo> findPostsTopten() {
 
         Pageable pageable = PageRequest.of(0, 10);
@@ -93,4 +96,19 @@ public class PostService {
             .map(GetPostSimpleInfo::toDto)
             .toList();
     }
+
+    //추천순 조회
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsTopRecommended(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postList = postRepository.findByTopRecommended(pageable);
+
+        List<GetPostSimpleInfo> postDtoList = postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
+
+        return new PageResponseDto<>(postList.getNumber(), postList.getTotalPages(),
+        postDtoList);
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.tripy.domain.post;
 
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
 import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
+import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,15 @@ public class PostController {
     @GetMapping("api/posts/top-ten")
     public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten() {
         return ApiResponse.onSuccess(postService.findPostsTopten());
+    }
+
+    /**
+     * [GET] 전체 글 추천 많은 순 조회
+     */
+    @GetMapping("api/posts/top-recommended")
+    public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostTopRecommended(
+        @RequestParam int page, @RequestParam int size
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsTopRecommended(page, size));
     }
 }
