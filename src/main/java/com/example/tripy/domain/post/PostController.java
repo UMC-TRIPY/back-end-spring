@@ -47,9 +47,10 @@ public class PostController {
      */
     @GetMapping("api/posts/top")
     public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten(
+        @RequestParam Long countryId,
         @RequestParam int num
     ) {
-        return ApiResponse.onSuccess(postService.findPostsTop(num));
+        return ApiResponse.onSuccess(postService.findPostsTop(countryId, num));
     }
 
     /**

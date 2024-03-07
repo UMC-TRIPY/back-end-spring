@@ -1,6 +1,7 @@
 package com.example.tripy.domain.post;
 
 import com.example.tripy.domain.city.City;
+import com.example.tripy.domain.country.Country;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
 import com.example.tripy.domain.travelplan.TravelPlan;
@@ -56,6 +57,9 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
     private TravelPlan travelPlan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Country country;
 
     public static Post toEntity(CreatePostRequest createPostRequest, Member member, City city
         , TravelPlan travelPlan) {

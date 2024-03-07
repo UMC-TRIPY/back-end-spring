@@ -50,13 +50,13 @@ public class PostService {
         Post post = Post.toEntity(createPostRequest, member, city, travelPlan);
 
         postRepository.save(post);
-        if(createPostRequest.getImageUrls() != null) {
+        if (createPostRequest.getImageUrls() != null) {
             addImages(post, createPostRequest.getImageUrls());
         }
-        if(createPostRequest.getFileUrls() != null) {
+        if (createPostRequest.getFileUrls() != null) {
             addFiles(post, createPostRequest.getFileUrls());
         }
-        if(createPostRequest.getTagIds() != null) {
+        if (createPostRequest.getTagIds() != null) {
             addTags(post, createPostRequest.getTagIds());
         }
     }
@@ -87,10 +87,19 @@ public class PostService {
     }
 
     //TOP 조회
-    public List<GetPostSimpleInfo> findPostsTop(int num) {
+    public List<GetPostSimpleInfo> findPostsTop(Long countryId, int num) {
 
         Pageable pageable = PageRequest.of(0, num);
-        List<Post> postList = postRepository.findByRankTopOrderByRank(pageable);
+
+        List<Post> postList;
+        // 전체 조회
+        if (countryId == null) {
+            postList = postRepository.findByRankTopOrderByRankNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findByRankTopOrderByRankNotNullCountryId(countryId, pageable);
+        }
 
         return postList.stream()
             .map(GetPostSimpleInfo::toDto)
@@ -107,7 +116,7 @@ public class PostService {
             .toList();
 
         return new PageResponseDto<>(postList.getNumber(), postList.getTotalPages(),
-        postDtoList);
+            postDtoList);
     }
 
     //최신순 조회
