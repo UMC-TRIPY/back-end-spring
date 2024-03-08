@@ -1,7 +1,5 @@
 package com.example.tripy.domain.posttag;
 
-import static java.util.stream.Collectors.toList;
-
 import com.example.tripy.domain.post.Post;
 import com.example.tripy.domain.tag.Tag;
 import com.example.tripy.domain.tag.TagRepository;

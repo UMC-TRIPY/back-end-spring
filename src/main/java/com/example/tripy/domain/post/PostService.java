@@ -142,7 +142,7 @@ public class PostService {
         }
         //나라별 조회
         else {
-            postList = postRepository.findByTopRecommendedNotNullCountryId(countryId, pageable);
+            postList = postRepository.findAllByCountryIdAndOrderByCreatedAtDescNotNullCountryId(countryId, pageable);
         }
 
         List<GetPostSimpleInfo> postDtoList = postList.stream()
