@@ -1,6 +1,7 @@
 package com.example.tripy.domain.post;
 
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostDetailInfo;
 import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
@@ -73,5 +74,13 @@ public class PostController {
         @RequestParam int page, @RequestParam int size
     ) {
         return ApiResponse.onSuccess(postService.findPostsLatest(countryId, page, size));
+    }
+
+    /**
+     * [GET] 게시글 상세 조회
+     */
+    @GetMapping("api/posts/{postsId}")
+    public ApiResponse<GetPostDetailInfo> findPost(@PathVariable Long postsId) {
+        return ApiResponse.onSuccess(postService.findPost(postsId));
     }
 }

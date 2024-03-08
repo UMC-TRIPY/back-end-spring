@@ -5,6 +5,7 @@ import com.example.tripy.domain.city.CityRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostDetailInfo;
 import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
 import com.example.tripy.domain.postfile.FileType;
 import com.example.tripy.domain.postfile.PostFileService;
@@ -33,6 +34,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostTagService postTagService;
 
+    //게시글 추가
     @Transactional
     public void addPost(CreatePostRequest createPostRequest, Long travelPlanId, Long cityId) {
 
@@ -73,6 +75,7 @@ public class PostService {
         postTagService.savePostTag(post, tagIds);
     }
 
+    //게시글 삭제
     public void deletePost(Long postsId) {
         Member member = memberRepository.findById(1L)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
@@ -150,4 +153,15 @@ public class PostService {
             postDtoList);
     }
 
+    //게시글 단일 조회
+    public GetPostDetailInfo findPost(Long postsId) {
+        Post post = postRepository.findById(postsId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        List<String> imageUrls = postFileService.findImageFileUrlsByPostAndFileType(post, FileType.IMAGE);
+        List<String> fileUrls = postFileService.findImageFileUrlsByPostAndFileType(post, FileType.FILE);
+        List<String> postTags = postTagService.findTagsStringByPost(post);
+
+        return GetPostDetailInfo.toDto(post, imageUrls, fileUrls, postTags);
+    }
 }
