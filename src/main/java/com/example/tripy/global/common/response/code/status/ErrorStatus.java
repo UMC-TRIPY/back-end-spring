@@ -35,7 +35,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _EMPTY_TRAVEL_PLAN(HttpStatus.NOT_FOUND, "TRAVEL_PLAN_001", "존재하지 않는 여행 계획입니다."),
     _ALREADY_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST, "TRAVEL_PLAN_002",
         "이미 가방이 존재하는 여행 계획입니다."),
-    _FALSE_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST,"TRAVEL_PLAN_003",
+    _FAULT_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST,"TRAVEL_PLAN_003",
 		"여행 목록에 해당하는 가방 목록이 생성되지 않았습니다."),
 
     //S3 관련

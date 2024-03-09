@@ -87,7 +87,7 @@ public class BagService {
 		//bagExists 값이 True인 TravelPlan만 가능
 		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
 				travelPlanId)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._FALSE_TRAVEL_PLAN_BAG_EXISTS));
+			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
 
 		Bag bag = Bag.toEntity(createBagRequest, member, travelPlan);
 		bagRepository.save(bag);
