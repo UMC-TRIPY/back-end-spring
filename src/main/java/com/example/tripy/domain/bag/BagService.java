@@ -49,11 +49,10 @@ public class BagService {
 
 
 	// 내 일정에 맞는 가방 목록 모두 불러오기
-	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size,
-		Long memberId) {
+	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size) {
 
 		Pageable pageable = PageRequest.of(page, size);
-		Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(memberId,
+		Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(1L,
 			pageable);
 
 		return new PageResponseDto<>(result.getNumber(), result.getTotalPages(),
@@ -63,10 +62,10 @@ public class BagService {
 	}
 
 	@Transactional
-	public String updateBagExists(Long memberId, Long travelPlanId) {
+	public String updateBagExists(Long travelPlanId) {
 
 		//Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(memberId)
+		Member member = memberRepository.findById(1L)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		//bagExists 값이 False인 TravelPlan만 가능, 이미 가방이 존재하면 예외 처리

@@ -29,18 +29,17 @@ public class BagController {
 	 */
 	@GetMapping("/members/bags/{memberId}")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
-		@PathVariable(value = "memberId") Long memberId, @RequestParam(value = "page") int page,
-		@RequestParam(value = "size") int size) {
-		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, memberId));
+		@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size));
 	}
 
 	/**
 	 * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기
 	 */
-	@PostMapping("/members/bags/{memberId}/{travelPlanId}")
-	public ApiResponse<String> updateBagExists(@PathVariable Long memberId,
+	@PostMapping("/members/bags/{travelPlanId}")
+	public ApiResponse<String> updateBagExists(
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.updateBagExists(memberId, travelPlanId));
+		return ApiResponse.onSuccess(bagService.updateBagExists(travelPlanId));
 	}
 
 	@GetMapping("/material-name")
