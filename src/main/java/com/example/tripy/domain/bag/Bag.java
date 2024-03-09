@@ -1,5 +1,6 @@
 package com.example.tripy.domain.bag;
 
+import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.global.utils.BaseTimeEntity;
@@ -20,34 +21,37 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Bag extends BaseTimeEntity {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    private String bagName;
+	@NotNull
+	private String bagName;
 
-    @NotNull
-    private String content;
+	private String content;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "travelplan_id")
-    private TravelPlan travelPlan;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "travelplan_id")
+	private TravelPlan travelPlan;
 
-    @Builder
-    public Bag(String bagName, String content, Member member, TravelPlan travelPlan) {
-        this.bagName = bagName;
-        this.content = content;
-        this.member = member;
-        this.travelPlan = travelPlan;
-    }
+
+	public static Bag toEntity(CreateBagRequest createBagRequest, Member member,
+		TravelPlan travelPlan) {
+		return Bag.builder()
+			.bagName(createBagRequest.getBagName())
+			.content(null)
+			.member(member)
+			.travelPlan(travelPlan)
+			.build();
+	}
 
 }
