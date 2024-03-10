@@ -1,5 +1,7 @@
 package com.example.tripy.domain.bag;
 
+import static com.example.tripy.domain.bag.dto.BagResponseDto.toBagListWithMaterialInfoDto;
+
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
@@ -104,7 +106,8 @@ public class BagService {
 					.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getMaterial().getName(),
 						bagMaterials.getIsChecked()))
 					.collect(Collectors.toList());
-				return new BagListWithMaterialInfo(bag, bagMaterialInfos);
+				return toBagListWithMaterialInfoDto(bag.getBagName(), bagMaterialInfos,
+					bag.getTravelPlan().getId());
 			})
 			.collect(Collectors.toList());
 	}
