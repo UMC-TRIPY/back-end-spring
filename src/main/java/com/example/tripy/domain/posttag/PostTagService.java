@@ -28,7 +28,17 @@ public class PostTagService {
         });
     }
 
+    @Transactional
     public void deletePostTagsByPost(Post post) {
         postTagRepository.deleteByPost(post);
+    }
+
+    //게시글 태그 가져오기
+    public List<String> findTagsStringByPost(Post post) {
+        List<PostTag> postTagList = postTagRepository.findAllByPost(post);
+
+        return postTagList.stream()
+            .map(postTag -> postTag.getTag().getTagName())
+            .toList();
     }
 }

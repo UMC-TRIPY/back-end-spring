@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PostFileRepository extends JpaRepository<PostFile, Long> {
 
     List<PostFile> findAllByPost(Post post);
+
+    List<PostFile> findAllByPostAndFileType(Post post, FileType fileType);
 }

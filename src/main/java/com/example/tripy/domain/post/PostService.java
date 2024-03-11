@@ -5,16 +5,22 @@ import com.example.tripy.domain.city.CityRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostDetailInfo;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
 import com.example.tripy.domain.postfile.FileType;
 import com.example.tripy.domain.postfile.PostFileService;
 import com.example.tripy.domain.posttag.PostTagService;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
+import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostTagService postTagService;
 
+    //게시글 추가
     @Transactional
     public void addPost(CreatePostRequest createPostRequest, Long travelPlanId, Long cityId) {
 
@@ -45,13 +52,13 @@ public class PostService {
         Post post = Post.toEntity(createPostRequest, member, city, travelPlan);
 
         postRepository.save(post);
-        if(createPostRequest.getImageUrls() != null) {
+        if (createPostRequest.getImageUrls() != null) {
             addImages(post, createPostRequest.getImageUrls());
         }
-        if(createPostRequest.getFileUrls() != null) {
+        if (createPostRequest.getFileUrls() != null) {
             addFiles(post, createPostRequest.getFileUrls());
         }
-        if(createPostRequest.getTagIds() != null) {
+        if (createPostRequest.getTagIds() != null) {
             addTags(post, createPostRequest.getTagIds());
         }
     }
@@ -68,6 +75,7 @@ public class PostService {
         postTagService.savePostTag(post, tagIds);
     }
 
+    //게시글 삭제
     public void deletePost(Long postsId) {
         Member member = memberRepository.findById(1L)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
@@ -79,5 +87,81 @@ public class PostService {
         postTagService.deletePostTagsByPost(post);
 
         postRepository.delete(post);
+    }
+
+    //TOP 조회
+    public List<GetPostSimpleInfo> findPostsTop(Long countryId, int num) {
+
+        Pageable pageable = PageRequest.of(0, num);
+
+        List<Post> postList;
+        // 전체 조회
+        if (countryId == null) {
+            postList = postRepository.findByRankTopOrderByRankNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findByRankTopOrderByRankNotNullCountryId(countryId, pageable);
+        }
+
+        return postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
+    }
+
+    //추천순 조회
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsTopRecommended(Long countryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postList;
+
+        //전체 조회
+        if(countryId == null) {
+            postList = postRepository.findByTopRecommendedNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findByTopRecommendedNotNullCountryId(countryId, pageable);
+        }
+
+        List<GetPostSimpleInfo> postDtoList = postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
+
+        return new PageResponseDto<>(postList.getNumber(), postList.getTotalPages(),
+            postDtoList);
+    }
+
+    //최신순 조회
+    public PageResponseDto<List<GetPostSimpleInfo>> findPostsLatest(Long countryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postList;
+
+        //전체 조회
+        if(countryId == null) {
+            postList = postRepository.findAllByOrderByCreatedAtDescNullCountryId(pageable);
+        }
+        //나라별 조회
+        else {
+            postList = postRepository.findAllByCountryIdAndOrderByCreatedAtDescNotNullCountryId(countryId, pageable);
+        }
+
+        List<GetPostSimpleInfo> postDtoList = postList.stream()
+            .map(GetPostSimpleInfo::toDto)
+            .toList();
+
+        return new PageResponseDto<>(postList.getNumber(), postList.getTotalPages(),
+            postDtoList);
+    }
+
+    //게시글 단일 조회
+    public GetPostDetailInfo findPost(Long postsId) {
+        Post post = postRepository.findById(postsId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        List<String> imageUrls = postFileService.findImageFileUrlsByPostAndFileType(post, FileType.IMAGE);
+        List<String> fileUrls = postFileService.findImageFileUrlsByPostAndFileType(post, FileType.FILE);
+        List<String> postTags = postTagService.findTagsStringByPost(post);
+
+        return GetPostDetailInfo.toDto(post, imageUrls, fileUrls, postTags);
     }
 }
