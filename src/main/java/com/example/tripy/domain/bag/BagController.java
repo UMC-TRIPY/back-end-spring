@@ -1,5 +1,6 @@
 package com.example.tripy.domain.bag;
 
+import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,18 +30,17 @@ public class BagController {
 	 */
 	@GetMapping("/members/bags/{memberId}")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
-		@PathVariable(value = "memberId") Long memberId, @RequestParam(value = "page") int page,
-		@RequestParam(value = "size") int size) {
-		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, memberId));
+		@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
+		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size));
 	}
 
 	/**
 	 * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기
 	 */
-	@PostMapping("/members/bags/{memberId}/{travelPlanId}")
-	public ApiResponse<String> updateBagExists(@PathVariable Long memberId,
+	@PostMapping("/members/bags/{travelPlanId}")
+	public ApiResponse<String> updateBagExists(
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.updateBagExists(memberId, travelPlanId));
+		return ApiResponse.onSuccess(bagService.updateBagExists(travelPlanId));
 	}
 
 	@GetMapping("/material-name")
@@ -48,6 +49,11 @@ public class BagController {
 		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryName));
 	}
 
+	@PostMapping("/members/bags")
+	public ApiResponse<String> createBag(@RequestBody CreateBagRequest createBagRequest,
+		@RequestParam Long travelPlanId) {
+		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId));
+  }
 
 	/**
 	 * [GET] 여행 가방 리스트와 가방 내 준비물 불러오기
@@ -57,6 +63,6 @@ public class BagController {
 		@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
 		return ApiResponse.onSuccess(
 			bagService.getBagsListAndMaterialsByTravelPlan(memberId, travelPlanId));
+  }
 
-	}
 }
