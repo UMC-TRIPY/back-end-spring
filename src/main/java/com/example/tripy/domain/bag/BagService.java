@@ -1,7 +1,12 @@
 package com.example.tripy.domain.bag;
 
+import static com.example.tripy.domain.bag.dto.BagResponseDto.toBagListWithMaterialInfoDto;
+
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
+import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
@@ -27,6 +32,8 @@ public class BagService {
 	private final TravelPlanRepository travelPlanRepository;
 	private final MemberRepository memberRepository;
 	private final BagRepository bagRepository;
+	private final BagMaterialsRepository bagMaterialsRepository;
+
 
 	// Bag에 대한 간단한 일정 정보 Dto에 매핑
 	public List<BagListSimpleInfo> setBagListSimpleInfo(List<TravelPlan> travelPlans) {
@@ -93,6 +100,34 @@ public class BagService {
 		bagRepository.save(bag);
 
 		return "가방 추가 완료";
+  }
+
+	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long memberId,
+		Long travelPlanId) {
+		//Member 관련 메서드가 추가되면 수정 예정
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
+			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+
+		List<Bag> bags = bagRepository.findBagsByTravelPlan(travelPlan);
+		return getBagMaterialsAndIsCheckedByBags(bags);
+
+	}
+
+	public List<BagListWithMaterialInfo> getBagMaterialsAndIsCheckedByBags(List<Bag> bags) {
+		return bags.stream()
+			.map(bag -> {
+				List<BagMaterialInfo> bagMaterialInfos = bagMaterialsRepository.findBagMaterialsByBag(
+						bag).stream()
+					.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getMaterial().getName(),
+						bagMaterials.getIsChecked()))
+					.collect(Collectors.toList());
+				return toBagListWithMaterialInfoDto(bag.getBagName(), bagMaterialInfos,
+					bag.getTravelPlan().getId());
+			})
+			.collect(Collectors.toList());
 	}
 
 }

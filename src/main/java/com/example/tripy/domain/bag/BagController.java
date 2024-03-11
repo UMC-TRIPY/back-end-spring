@@ -2,6 +2,7 @@ package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.global.common.dto.PageResponseDto;
@@ -52,5 +53,16 @@ public class BagController {
 	public ApiResponse<String> createBag(@RequestBody CreateBagRequest createBagRequest,
 		@RequestParam Long travelPlanId) {
 		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId));
-	}
+  }
+
+	/**
+	 * [GET] 여행 가방 리스트와 가방 내 준비물 불러오기
+	 */
+	@GetMapping("/members/{memberId}/materials/{travelPlanId}")
+	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
+		@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
+		return ApiResponse.onSuccess(
+			bagService.getBagsListAndMaterialsByTravelPlan(memberId, travelPlanId));
+  }
+
 }

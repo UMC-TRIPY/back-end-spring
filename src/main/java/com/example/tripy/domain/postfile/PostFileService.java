@@ -30,4 +30,13 @@ public class PostFileService {
             s3Service.deleteFile(s3Service.parseFileName(postFile.getUrl()));
         }
     }
+
+    //타입별 파일 불러오기
+    public List<String> findImageFileUrlsByPostAndFileType(Post post, FileType fileType) {
+        List<PostFile> postFiles = postFileRepository.findAllByPostAndFileType(post, fileType);
+
+        return postFiles.stream()
+            .map(PostFile::getUrl)
+            .toList();
+    }
 }
