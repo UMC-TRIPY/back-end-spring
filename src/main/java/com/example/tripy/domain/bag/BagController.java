@@ -52,7 +52,7 @@ public class BagController {
 	/**
 	 * [GET] 여행 가방 리스트와 가방 내 준비물 불러오기
 	 */
-	@GetMapping("/members/materials/{memberId}/{travelPlanId}")
+	@GetMapping("/members/{memberId}/materials/{travelPlanId}")
 	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
 		@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
 		return ApiResponse.onSuccess(
