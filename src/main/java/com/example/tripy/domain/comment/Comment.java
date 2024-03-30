@@ -1,4 +1,4 @@
-package com.example.tripy.domain.continent;
+package com.example.tripy.domain.comment;
 
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.post.Post;

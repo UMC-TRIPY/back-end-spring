@@ -1,6 +1,6 @@
 package com.example.tripy.domain.comment.dto;
 
-import com.example.tripy.domain.continent.Comment;
+import com.example.tripy.domain.comment.Comment;
 import com.example.tripy.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,7 @@
 package com.example.tripy.domain.comment;
 
-import com.example.tripy.domain.comment.dto.GetCommentResponse;
 import com.example.tripy.domain.comment.dto.GetCommentResponse.GetCommentInfo;
-import com.example.tripy.domain.continent.Comment;
+import com.example.tripy.domain.comment.Comment;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.post.Post;
