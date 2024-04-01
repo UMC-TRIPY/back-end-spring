@@ -35,9 +35,10 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     private Post post;
 
-    public static Comment toEntity(Member member, String content) {
+    public static Comment toEntity(Member member, Post post, String content) {
         return Comment.builder()
             .member(member)
+            .post(post)
             .content(content)
             .build();
     }

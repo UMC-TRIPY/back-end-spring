@@ -1,7 +1,7 @@
 package com.example.tripy.domain.comment;
 
-import com.example.tripy.domain.comment.dto.GetCommentResponse.GetCommentInfo;
-import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.comment.dto.CommentRequestDto.CreateCommentRequest;
+import com.example.tripy.domain.comment.dto.CommentResponseDto.GetCommentInfo;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import java.util.List;
@@ -22,11 +22,12 @@ public class CommentController {
     /**
      * [POST] 댓글 작성
      */
-    @PostMapping("api/comments")
+    @PostMapping("api/{posts-id}/comments")
     public ApiResponse<String> createComment(
-        @RequestBody CreatePostRequest createPostRequest
+        @PathVariable(value = "posts-id") Long postId,
+        @RequestBody CreateCommentRequest createCommentRequest
     ) {
-        commentService.addComment(createPostRequest.getContent());
+        commentService.addComment(createCommentRequest.getContent(), postId);
         return ApiResponse.onSuccess("댓글 작성에 성공했습니다.");
     }
 

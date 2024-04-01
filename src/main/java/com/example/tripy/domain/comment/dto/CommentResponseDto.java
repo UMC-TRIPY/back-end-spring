@@ -5,7 +5,7 @@ import com.example.tripy.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 
-public class GetCommentResponse {
+public class CommentResponseDto {
 
     @Getter
     @Builder

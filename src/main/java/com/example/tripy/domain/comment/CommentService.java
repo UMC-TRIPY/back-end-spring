@@ -1,7 +1,6 @@
 package com.example.tripy.domain.comment;
 
-import com.example.tripy.domain.comment.dto.GetCommentResponse.GetCommentInfo;
-import com.example.tripy.domain.comment.Comment;
+import com.example.tripy.domain.comment.dto.CommentResponseDto.GetCommentInfo;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.post.Post;
@@ -24,12 +23,15 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     //댓글 추가
-    public void addComment(String content) {
+    public void addComment(String content, Long postId) {
 
         Member member = memberRepository.findById(1L)
             .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-        Comment comment = Comment.toEntity(member, content);
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_POST));
+
+        Comment comment = Comment.toEntity(member, post, content);
         commentRepository.save(comment);
     }
 
