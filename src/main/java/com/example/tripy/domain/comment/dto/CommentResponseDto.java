@@ -16,12 +16,12 @@ public class CommentResponseDto {
         private String content;
         private String createdAt;
 
-        public static GetCommentInfo toDto(Comment comment, Member member) {
+        public static GetCommentInfo toDto(Comment comment, Member member, String createdAt) {
             return GetCommentInfo.builder()
                 .nickname(member.getNickName())
                 .profileImageUrl(member.getProfileImgUrl())
                 .content(comment.getContent())
-                .createdAt(String.valueOf(comment.getCreatedAt()))
+                .createdAt(createdAt)
                 .build();
 
         }

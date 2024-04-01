@@ -8,6 +8,7 @@ import com.example.tripy.domain.post.PostRepository;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
+import com.example.tripy.global.utils.DateTimeConverter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+
     //댓글 추가
     public void addComment(String content, Long postId) {
 
@@ -45,7 +47,8 @@ public class CommentService {
         Page<Comment> commentList = commentRepository.findByPost(post, pageable);
 
         List<GetCommentInfo> dtoList = commentList.stream()
-            .map(comment -> GetCommentInfo.toDto(comment, comment.getMember()))
+            .map(comment -> GetCommentInfo.toDto(comment, comment.getMember(),
+                DateTimeConverter.convertToDisplayTime(comment.getCreatedAt())))
             .toList();
 
         return new PageResponseDto<>(commentList.getNumber(), commentList.getTotalPages(), dtoList);
