@@ -17,6 +17,7 @@ import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -162,6 +163,10 @@ public class PostService {
         List<String> fileUrls = postFileService.findImageFileUrlsByPostAndFileType(post, FileType.FILE);
         List<String> postTags = postTagService.findTagsStringByPost(post);
 
-        return GetPostDetailInfo.toDto(post, imageUrls, fileUrls, postTags);
+        Long travelPlanId = Optional.ofNullable(post.getTravelPlan())
+            .map(TravelPlan::getId)
+            .orElse(null);
+
+        return GetPostDetailInfo.toDto(post, travelPlanId, imageUrls, fileUrls, postTags);
     }
 }

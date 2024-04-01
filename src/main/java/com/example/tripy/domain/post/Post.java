@@ -38,10 +38,10 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @ColumnDefault("0")
-    private Long view;
+    private Long view = 0L;
 
     @ColumnDefault("0")
-    private Integer recommendationCount;
+    private Integer recommendationCount = 0;
 
     @ColumnDefault("0")
     private int rank;
