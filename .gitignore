@@ -19,6 +19,7 @@
 # .idea/modules
 # *.iml
 # *.ipr
+*.yml
 
 # CMake
 cmake-build-*/
