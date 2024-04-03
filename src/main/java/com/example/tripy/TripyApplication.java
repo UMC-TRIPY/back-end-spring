@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @OpenAPIDefinition(servers = {
-    @Server(url = "${spring.swagger.domain}", description = "Default Server URL")
+    @Server(url = "/", description = "Default Server URL")
 })
 @EnableScheduling
 @SpringBootApplication
