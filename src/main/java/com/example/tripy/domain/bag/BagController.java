@@ -28,7 +28,7 @@ public class BagController {
 	/**
 	 * [GET] 내 여행 가방 모두 불러오기
 	 */
-	@GetMapping("/members/bags/{memberId}")
+	@GetMapping("/members/bags")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
 		@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
 		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size));
@@ -43,26 +43,31 @@ public class BagController {
 		return ApiResponse.onSuccess(bagService.updateBagExists(travelPlanId));
 	}
 
+	/**
+	 * [GET] 여행지별 준비물 불러오기
+	 */
 	@GetMapping("/material-name")
 	public ApiResponse<MaterialListByCountry> getCountryMaterials(
 		@RequestParam(value = "countryName") String countryName) {
 		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryName));
 	}
 
+	/**
+	 * [POST] 여행 일정에 해당하는 개별 가방 생성(추가)하기
+	 */
 	@PostMapping("/members/bags")
 	public ApiResponse<String> createBag(@RequestBody CreateBagRequest createBagRequest,
 		@RequestParam Long travelPlanId) {
 		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId));
-  }
+	}
 
 	/**
 	 * [GET] 여행 가방 리스트와 가방 내 준비물 불러오기
 	 */
-	@GetMapping("/members/{memberId}/materials/{travelPlanId}")
+	@GetMapping("/members/materials/{travelPlanId}")
 	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
-		@PathVariable Long memberId, @PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(
-			bagService.getBagsListAndMaterialsByTravelPlan(memberId, travelPlanId));
-  }
+		@PathVariable(value = "travelPlanId") Long travelPlanId) {
+		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId));
+	}
 
 }

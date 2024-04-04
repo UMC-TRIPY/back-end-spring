@@ -58,8 +58,12 @@ public class BagService {
 	// 내 일정에 맞는 가방 목록 모두 불러오기
 	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size) {
 
+		// Member 관련 메서드가 추가되면 수정 예정
+		Member member = memberRepository.findById(1L)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
 		Pageable pageable = PageRequest.of(page, size);
-		Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(1L,
+		Page<TravelPlan> result = travelPlanRepository.findAllByMemberAndBagExistsIsTrue(member,
 			pageable);
 
 		return new PageResponseDto<>(result.getNumber(), result.getTotalPages(),
@@ -100,12 +104,11 @@ public class BagService {
 		bagRepository.save(bag);
 
 		return "가방 추가 완료";
-  }
+	}
 
-	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long memberId,
-		Long travelPlanId) {
+	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long travelPlanId) {
 		//Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(memberId)
+		Member member = memberRepository.findById(1L)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
