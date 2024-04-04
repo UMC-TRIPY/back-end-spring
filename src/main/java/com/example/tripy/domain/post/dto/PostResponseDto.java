@@ -50,12 +50,12 @@ public class PostResponseDto {
         private String createdAt;
 
 
-        public static GetPostDetailInfo toDto(Post post, List<String> imgUrls, List<String> fileUrls, List<String> postTags) {
+        public static GetPostDetailInfo toDto(Post post, Long travelPlanId, List<String> imgUrls, List<String> fileUrls, List<String> postTags) {
             return GetPostDetailInfo.builder()
                 .postId(post.getId())
                 .title(post.getTitle())
                 .nickname(post.getMember().getNickName())
-                .travelPlanId(post.getTravelPlan().getId())
+                .travelPlanId(travelPlanId)
                 .content(post.getContent())
                 .imgUrls(imgUrls)
                 .fileUrls(fileUrls)
