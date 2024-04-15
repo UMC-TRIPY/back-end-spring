@@ -1,7 +1,7 @@
-package com.example.tripy.global.common.response.code.status;
+package com.example.tripy.global.response.code.status;
 
-import com.example.tripy.global.common.response.code.BaseErrorCode;
-import com.example.tripy.global.common.response.code.ErrorReasonDto;
+import com.example.tripy.global.response.code.BaseErrorCode;
+import com.example.tripy.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

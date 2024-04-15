@@ -1,4 +1,4 @@
-package com.example.tripy.global.common.response.code;
+package com.example.tripy.global.response.code;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.example.tripy.global.common.dto;
+package com.example.tripy.global.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

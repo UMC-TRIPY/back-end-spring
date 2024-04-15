@@ -1,8 +1,8 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
-import com.example.tripy.global.common.dto.PageResponseDto;
-import com.example.tripy.global.common.response.ApiResponse;
+import com.example.tripy.global.common.PageResponseDto;
+import com.example.tripy.global.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

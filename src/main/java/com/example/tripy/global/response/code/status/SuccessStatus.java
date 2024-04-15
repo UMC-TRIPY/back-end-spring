@@ -1,4 +1,4 @@
-package com.example.tripy.global.common.response.code.status;
+package com.example.tripy.global.response.code.status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
