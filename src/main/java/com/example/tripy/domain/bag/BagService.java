@@ -65,7 +65,7 @@ public class BagService {
 
         //Member 관련 메서드가 추가되면 수정 예정
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_USER));
 
         //bagExists 값이 False인 TravelPlan만 가능, 이미 가방이 존재하면 예외 처리
         TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsFalse(member,
