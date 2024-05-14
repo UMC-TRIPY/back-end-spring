@@ -38,4 +38,8 @@ public class Material extends BaseTimeEntity {
             .name(createMaterialRequest.getMaterialName())
             .build();
     }
+
+    public void updateMaterial(String name) {
+        this.name = name;
+    }
 }

@@ -135,8 +135,7 @@ public class BagService {
 	public GetBagSimpleInfo updateMemo(UpdateBagContent updateBagContent, Long travelPlanId,
 		Long bagId) {
 
-		Bag bag = bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
+		Bag bag = getBag(bagId, travelPlanId);
 
 		bag.updateBagContent(updateBagContent.getBagContent());
 
@@ -148,8 +147,7 @@ public class BagService {
 		Long travelPlanId,
 		Long bagId) {
 
-		Bag bag = bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
+		Bag bag = getBag(bagId, travelPlanId);
 
 		saveMaterialAndLinkToBag(bag, createMaterialRequest);
 
@@ -175,11 +173,32 @@ public class BagService {
 	private BagListWithMaterialInfo getBagMaterials(Bag bag) {
 		List<BagMaterialInfo> bagMaterialInfos = bagMaterialsRepository.findBagMaterialsByBag(
 				bag).stream()
-			.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getMaterial().getName(),
+			.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getId(),
+				bagMaterials.getMaterial().getName(),
 				bagMaterials.getIsChecked()))
 			.collect(Collectors.toList());
 
 		return toBagListWithMaterialInfoDto(bag, bagMaterialInfos);
+	}
+
+	@Transactional
+	public BagListWithMaterialInfo updateBagMaterialName(
+		CreateMaterialRequest createMaterialRequest, Long travelPlanId, Long bagId,
+		Long materialId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		BagMaterials bagMaterial = bagMaterialsRepository.findBagMaterialsByBagAndMaterialId(bag,
+			materialId);
+
+		bagMaterial.updateMaterialName(createMaterialRequest.getMaterialName());
+
+		return getBagMaterials(bag);
+	}
+
+	private Bag getBag(Long bagId, Long travelPlanId) {
+		return bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
 	}
 
 

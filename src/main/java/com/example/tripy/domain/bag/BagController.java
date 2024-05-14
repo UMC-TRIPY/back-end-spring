@@ -117,4 +117,19 @@ public class BagController {
 			bagService.addBagMaterial(createMaterialRequest, travelPlanId, bagId));
 	}
 
+
+	/**
+	 * [PATCH] 여행 가방 준비물 이름 수정
+	 */
+	@Operation(summary = "여행 가방 준비물 이름 수정하기", description = "가방의 준비물 이름을 수정합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> updateBagMaterialName(@RequestBody CreateMaterialRequest updateMaterialRequest,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.updateBagMaterialName(updateMaterialRequest, travelPlanId, bagId, materialId));
+	}
 }

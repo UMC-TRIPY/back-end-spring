@@ -41,4 +41,8 @@ public class BagMaterials extends BaseTimeEntity {
             .build();
     }
 
+    public void updateMaterialName(String updateName) {
+        this.material.updateMaterial(updateName);
+    }
+
 }
