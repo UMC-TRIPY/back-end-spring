@@ -217,5 +217,14 @@ public class BagService {
 			materialId);
 	}
 
+	@Transactional
+	public Boolean updateBagMaterialIsChecked(Long travelPlanId, Long bagId,
+		Long materialId){
+		Bag bag = getBag(bagId, travelPlanId);
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
+
+		return bagMaterial.updateBagMaterialIsChecked();
+
+	}
 
 }

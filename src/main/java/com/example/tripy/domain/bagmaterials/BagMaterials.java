@@ -45,4 +45,9 @@ public class BagMaterials extends BaseTimeEntity {
         this.material.updateMaterial(updateName);
     }
 
+    public Boolean updateBagMaterialIsChecked(){
+        this.isChecked = !this.isChecked;
+        return this.isChecked;
+    }
+
 }

@@ -151,4 +151,17 @@ public class BagController {
 		return ApiResponse.onSuccess(
 			bagService.deleteBagMaterial(travelPlanId, bagId, materialId));
 	}
+
+	/**
+	 * [PATCH] 여행 가방 준비물 체크박스 수정
+	 */
+	@Operation(summary = "여행 가방 준비물 체크박스 업데이트", description = "가방의 준비물 체크 상태를 수정합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials/check")
+	public ApiResponse<Boolean> updateBagMaterialIsChecked(@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId){
+		return ApiResponse.onSuccess(bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
+	}
 }
