@@ -103,6 +103,12 @@ public class BagController {
 		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId));
 	}
 
+	/**
+	 * [POST] 여행 가방에 준비물 추가하기
+	 */
+	@Operation(summary = "가방 내부에 준비물 추가하기", description = "가방 내부에 준비물을 추가합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
 	@PostMapping("/members/bags/{travelPlanId}/{bagId}/materials")
 	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(@RequestBody CreateMaterialRequest createMaterialRequest,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
