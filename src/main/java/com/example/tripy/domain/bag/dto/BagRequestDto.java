@@ -14,5 +14,13 @@ public class BagRequestDto {
 		private String bagName;
 	}
 
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class UpdateBagContent {
+
+		private String bagContent;
+	}
+
 
 }

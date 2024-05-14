@@ -1,19 +1,21 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
+import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,6 +86,20 @@ public class BagController {
 	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
 		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId));
+	}
+
+
+	/**
+	 * [PATCH] 여행 가방 메모 작성하기
+	 */
+	@Operation(summary = "가방 내부에 메모 작성하기", description = "가방 내부에 메모를 작성합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}")
+	public ApiResponse<GetBagSimpleInfo> updateMemo(@RequestBody UpdateBagContent updateBagContent,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId));
 	}
 
 }

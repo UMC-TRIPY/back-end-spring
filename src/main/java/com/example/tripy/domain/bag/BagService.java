@@ -3,8 +3,10 @@ package com.example.tripy.domain.bag;
 import static com.example.tripy.domain.bag.dto.BagResponseDto.toBagListWithMaterialInfoDto;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
+import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
@@ -131,6 +133,18 @@ public class BagService {
 					bag.getTravelPlan().getId());
 			})
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public GetBagSimpleInfo updateMemo(UpdateBagContent updateBagContent, Long travelPlanId,
+		Long bagId) {
+
+		Bag bag = bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
+
+		bag.updateBagContent(updateBagContent.getBagContent());
+
+		return GetBagSimpleInfo.toDto(bag);
 	}
 
 }

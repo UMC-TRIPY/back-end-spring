@@ -1,5 +1,6 @@
 package com.example.tripy.domain.bag.dto;
 
+import com.example.tripy.domain.bag.Bag;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import java.util.Date;
@@ -50,6 +51,28 @@ public class BagResponseDto {
 			.bagMaterials(bagMaterials)
 			.travelPlanId(travelPlanId)
 			.build();
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagSimpleInfo {
+
+		private String bagName;
+		private Long travelPlanId;
+		private Long bagId;
+		private String bagContent;
+
+
+		public static GetBagSimpleInfo toDto(Bag bag) {
+			return GetBagSimpleInfo.builder()
+				.bagName(bag.getBagName())
+				.bagId(bag.getId())
+				.travelPlanId(bag.getTravelPlan().getId())
+				.bagContent(bag.getContent())
+				.build();
+		}
 	}
 
 }

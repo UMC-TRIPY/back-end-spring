@@ -54,4 +54,8 @@ public class Bag extends BaseTimeEntity {
 			.build();
 	}
 
+	public void updateBagContent(String content) {
+		this.content = content;
+	}
+
 }
