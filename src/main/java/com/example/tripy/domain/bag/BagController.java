@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -110,7 +111,8 @@ public class BagController {
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
 	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
 	@PostMapping("/members/bags/{travelPlanId}/{bagId}/materials")
-	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(@RequestBody CreateMaterialRequest createMaterialRequest,
+	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(
+		@RequestBody CreateMaterialRequest createMaterialRequest,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId) {
 		return ApiResponse.onSuccess(
@@ -126,10 +128,27 @@ public class BagController {
 	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
 	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
 	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials")
-	public ApiResponse<BagListWithMaterialInfo> updateBagMaterialName(@RequestBody CreateMaterialRequest updateMaterialRequest,
+	public ApiResponse<BagListWithMaterialInfo> updateBagMaterialName(
+		@RequestBody CreateMaterialRequest updateMaterialRequest,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
 		return ApiResponse.onSuccess(
-			bagService.updateBagMaterialName(updateMaterialRequest, travelPlanId, bagId, materialId));
+			bagService.updateBagMaterialName(updateMaterialRequest, travelPlanId, bagId,
+				materialId));
+	}
+
+	/**
+	 * [DELETE] 여행 가방 준비물 삭제
+	 */
+	@Operation(summary = "여행 가방 준비물 삭제하기", description = "가방의 준비물을 삭제합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@DeleteMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> deleteBagMaterial(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.deleteBagMaterial(travelPlanId, bagId, materialId));
 	}
 }

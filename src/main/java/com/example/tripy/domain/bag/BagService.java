@@ -188,8 +188,7 @@ public class BagService {
 
 		Bag bag = getBag(bagId, travelPlanId);
 
-		BagMaterials bagMaterial = bagMaterialsRepository.findBagMaterialsByBagAndMaterialId(bag,
-			materialId);
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
 
 		bagMaterial.updateMaterialName(createMaterialRequest.getMaterialName());
 
@@ -199,6 +198,23 @@ public class BagService {
 	private Bag getBag(Long bagId, Long travelPlanId) {
 		return bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
+	}
+
+	@Transactional
+	public BagListWithMaterialInfo deleteBagMaterial(Long travelPlanId, Long bagId,
+		Long materialId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
+
+		bagMaterialsRepository.delete(bagMaterial);
+
+		return getBagMaterials(bag);
+	}
+
+	private BagMaterials getBagMaterials(Bag bag, Long materialId) {
+		return bagMaterialsRepository.findBagMaterialsByBagAndMaterialId(bag,
+			materialId);
 	}
 
 
