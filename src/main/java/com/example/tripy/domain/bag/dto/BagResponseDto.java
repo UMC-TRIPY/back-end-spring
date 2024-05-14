@@ -38,18 +38,20 @@ public class BagResponseDto {
 	@Builder
 	public static class BagListWithMaterialInfo {
 
+		private Long bagId;
 		private String bagName;
-		private List<BagMaterialInfo> bagMaterials;
 		private Long travelPlanId;
+		private List<BagMaterialInfo> bagMaterials;
 
 	}
 
-	public static BagListWithMaterialInfo toBagListWithMaterialInfoDto(String bagName,
-		List<BagMaterialInfo> bagMaterials, Long travelPlanId) {
+	public static BagListWithMaterialInfo toBagListWithMaterialInfoDto(Bag bag,
+		List<BagMaterialInfo> bagMaterials) {
 		return BagListWithMaterialInfo.builder()
-			.bagName(bagName)
+			.bagId(bag.getId())
+			.bagName(bag.getBagName())
+			.travelPlanId(bag.getTravelPlan().getId())
 			.bagMaterials(bagMaterials)
-			.travelPlanId(travelPlanId)
 			.build();
 	}
 

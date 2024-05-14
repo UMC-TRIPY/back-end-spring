@@ -6,6 +6,7 @@ import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
+import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
@@ -100,6 +101,14 @@ public class BagController {
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId) {
 		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId));
+	}
+
+	@PostMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(@RequestBody CreateMaterialRequest createMaterialRequest,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(
+			bagService.addBagMaterial(createMaterialRequest, travelPlanId, bagId));
 	}
 
 }

@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class BagMaterials extends BaseTimeEntity {
 
     @Id
@@ -30,4 +32,13 @@ public class BagMaterials extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Material material;
+
+    public static BagMaterials toEntity(Bag bag, Material material){
+        return BagMaterials.builder()
+            .bag(bag)
+            .material(material)
+            .isChecked(false)
+            .build();
+    }
+
 }
