@@ -31,7 +31,7 @@ public class Country {
     private String name;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
 

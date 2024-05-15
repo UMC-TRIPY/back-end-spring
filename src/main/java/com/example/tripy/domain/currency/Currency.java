@@ -31,9 +31,5 @@ public class Currency extends BaseTimeEntity {
 
     private float deal;
 
-    private String countryName;
-
-    @OneToOne(mappedBy = "currency")
-    private Country country;
 
 }
