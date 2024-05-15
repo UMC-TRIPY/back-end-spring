@@ -2,6 +2,7 @@ package com.example.tripy.domain.bag.dto;
 
 import com.example.tripy.domain.bag.Bag;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
+import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +74,29 @@ public class BagResponseDto {
 				.bagId(bag.getId())
 				.travelPlanId(bag.getTravelPlan().getId())
 				.bagContent(bag.getContent())
+				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagDetailInfo {
+
+		private Long countryId;
+		private String bagContent; //메모
+		private BagListWithMaterialInfo bagListWithMaterialInfo; //가방 물건들
+		private MaterialListByCountry materialListByCountry; //여행지별 추천 준비물
+
+		public static GetBagDetailInfo toDto(Bag bag, Long countryId,
+			BagListWithMaterialInfo bagListWithMaterialInfo,
+			MaterialListByCountry materialListByCountry) {
+			return GetBagDetailInfo.builder()
+				.countryId(countryId)
+				.bagContent(bag.getContent())
+				.bagListWithMaterialInfo(bagListWithMaterialInfo)
+				.materialListByCountry(materialListByCountry)
 				.build();
 		}
 	}

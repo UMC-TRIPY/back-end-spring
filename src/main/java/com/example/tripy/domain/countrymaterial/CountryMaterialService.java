@@ -20,10 +20,10 @@ public class CountryMaterialService {
 	private final CountryMaterialRepository countryMaterialRepository;
 	private final CountryRepository countryRepository;
 
-	public MaterialListByCountry getCountryMaterials(String countryName) {
-		Country country = countryRepository.findCountryByName(countryName)
+	public MaterialListByCountry getCountryMaterials(Long countryId) {
+		Country country = countryRepository.findById(countryId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_COUNTRY));
-		List<Material> materials = countryMaterialRepository.findMaterialsByCountry(countryName);
+		List<Material> materials = countryMaterialRepository.findMaterialsByCountry(countryId);
 
 		return toMaterialListByCountryDto(country.getId(),
 			materials.stream().map(Material::getName).collect(Collectors.toList()));

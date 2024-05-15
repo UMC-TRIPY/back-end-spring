@@ -4,6 +4,7 @@ import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
@@ -64,8 +65,8 @@ public class BagController {
 	@Parameter(name = "countryName", description = "나라 이름, query string 입니다.")
 	@GetMapping("/material-name")
 	public ApiResponse<MaterialListByCountry> getCountryMaterials(
-		@RequestParam(value = "countryName") String countryName) {
-		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryName));
+		@RequestParam(value = "countryId") Long countryId) {
+		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryId));
 	}
 
 	/**
@@ -160,8 +161,18 @@ public class BagController {
 	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
 	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
 	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials/check")
-	public ApiResponse<Boolean> updateBagMaterialIsChecked(@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId){
-		return ApiResponse.onSuccess(bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
+	public ApiResponse<Boolean> updateBagMaterialIsChecked(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
 	}
+
+	@GetMapping("/members/bags/{travelPlanId}/detail/{bagId})")
+	public ApiResponse<GetBagDetailInfo> getBagDetail(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(bagService.getBagDetail(travelPlanId, bagId));
+	}
+
 }

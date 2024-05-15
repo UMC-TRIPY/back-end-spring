@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface CountryMaterialRepository extends JpaRepository<CountryMaterial, Long> {
 
-	@Query("SELECT cm.material FROM CountryMaterial cm WHERE cm.country.name = :countryName")
-	List<Material> findMaterialsByCountry(@Param("countryName") String countryName);
+	@Query("SELECT cm.material FROM CountryMaterial cm WHERE cm.country.id = :countryId")
+	List<Material> findMaterialsByCountry(@Param("countryId") Long countryId);
 
 }

@@ -6,14 +6,18 @@ import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.bagmaterials.BagMaterials;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
+import com.example.tripy.domain.cityplan.CityPlan;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
+import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.Material;
 import com.example.tripy.domain.material.MaterialRepository;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
+import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.travelplan.TravelPlan;
@@ -40,6 +44,7 @@ public class BagService {
 	private final BagRepository bagRepository;
 	private final BagMaterialsRepository bagMaterialsRepository;
 	private final MaterialRepository materialRepository;
+	private final CountryMaterialService countryMaterialService;
 
 
 	// Bag에 대한 간단한 일정 정보 Dto에 매핑
@@ -219,12 +224,37 @@ public class BagService {
 
 	@Transactional
 	public Boolean updateBagMaterialIsChecked(Long travelPlanId, Long bagId,
-		Long materialId){
+		Long materialId) {
 		Bag bag = getBag(bagId, travelPlanId);
 		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
 
 		return bagMaterial.updateBagMaterialIsChecked();
 
 	}
+
+	public GetBagDetailInfo getBagDetail(Long travelPlanId, Long bagId) {
+
+		Member member = memberRepository.findById(1L)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		BagListWithMaterialInfo bagListWithMaterialInfo = getBagMaterials(bag);
+
+		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
+			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+
+		Long countryId = getCountryIdByTravelPlan(travelPlan);
+
+		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(countryId);
+		return GetBagDetailInfo.toDto(bag, 1L, bagListWithMaterialInfo, materialListByCountry);
+	}
+
+	private Long getCountryIdByTravelPlan(TravelPlan travelPlan) {
+		CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(travelPlan)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
+		return cityPlan.getCity().getCountry().getId();
+	}
+
 
 }
