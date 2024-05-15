@@ -1,19 +1,24 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
+import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
+import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.global.common.dto.PageResponseDto;
 import com.example.tripy.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,8 +65,8 @@ public class BagController {
 	@Parameter(name = "countryName", description = "나라 이름, query string 입니다.")
 	@GetMapping("/material-name")
 	public ApiResponse<MaterialListByCountry> getCountryMaterials(
-		@RequestParam(value = "countryName") String countryName) {
-		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryName));
+		@RequestParam(value = "countryId") Long countryId) {
+		return ApiResponse.onSuccess(countryMaterialService.getCountryMaterials(countryId));
 	}
 
 	/**
@@ -84,6 +89,90 @@ public class BagController {
 	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
 		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId));
+	}
+
+
+	/**
+	 * [PATCH] 여행 가방 메모 작성하기
+	 */
+	@Operation(summary = "가방 내부에 메모 작성하기", description = "가방 내부에 메모를 작성합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}")
+	public ApiResponse<GetBagSimpleInfo> updateMemo(@RequestBody UpdateBagContent updateBagContent,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId));
+	}
+
+	/**
+	 * [POST] 여행 가방에 준비물 추가하기
+	 */
+	@Operation(summary = "가방 내부에 준비물 추가하기", description = "가방 내부에 준비물을 추가합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@PostMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(
+		@RequestBody CreateMaterialRequest createMaterialRequest,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(
+			bagService.addBagMaterial(createMaterialRequest, travelPlanId, bagId));
+	}
+
+
+	/**
+	 * [PATCH] 여행 가방 준비물 이름 수정
+	 */
+	@Operation(summary = "여행 가방 준비물 이름 수정하기", description = "가방의 준비물 이름을 수정합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> updateBagMaterialName(
+		@RequestBody CreateMaterialRequest updateMaterialRequest,
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.updateBagMaterialName(updateMaterialRequest, travelPlanId, bagId,
+				materialId));
+	}
+
+	/**
+	 * [DELETE] 여행 가방 준비물 삭제
+	 */
+	@Operation(summary = "여행 가방 준비물 삭제하기", description = "가방의 준비물을 삭제합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@DeleteMapping("/members/bags/{travelPlanId}/{bagId}/materials")
+	public ApiResponse<BagListWithMaterialInfo> deleteBagMaterial(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.deleteBagMaterial(travelPlanId, bagId, materialId));
+	}
+
+	/**
+	 * [PATCH] 여행 가방 준비물 체크박스 수정
+	 */
+	@Operation(summary = "여행 가방 준비물 체크박스 업데이트", description = "가방의 준비물 체크 상태를 수정합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@Parameter(name = "materialId", description = "준비물 Id, query string 입니다.")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials/check")
+	public ApiResponse<Boolean> updateBagMaterialIsChecked(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		return ApiResponse.onSuccess(
+			bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
+	}
+
+	@GetMapping("/members/bags/{travelPlanId}/detail/{bagId})")
+	public ApiResponse<GetBagDetailInfo> getBagDetail(
+		@PathVariable(value = "travelPlanId") Long travelPlanId,
+		@PathVariable(value = "bagId") Long bagId) {
+		return ApiResponse.onSuccess(bagService.getBagDetail(travelPlanId, bagId));
 	}
 
 }

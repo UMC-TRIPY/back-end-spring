@@ -1,6 +1,8 @@
 package com.example.tripy.domain.bag.dto;
 
+import com.example.tripy.domain.bag.Bag;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
+import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import java.util.Date;
 import java.util.List;
@@ -37,19 +39,66 @@ public class BagResponseDto {
 	@Builder
 	public static class BagListWithMaterialInfo {
 
+		private Long bagId;
 		private String bagName;
-		private List<BagMaterialInfo> bagMaterials;
 		private Long travelPlanId;
+		private List<BagMaterialInfo> bagMaterials;
 
 	}
 
-	public static BagListWithMaterialInfo toBagListWithMaterialInfoDto(String bagName,
-		List<BagMaterialInfo> bagMaterials, Long travelPlanId) {
+	public static BagListWithMaterialInfo toBagListWithMaterialInfoDto(Bag bag,
+		List<BagMaterialInfo> bagMaterials) {
 		return BagListWithMaterialInfo.builder()
-			.bagName(bagName)
+			.bagId(bag.getId())
+			.bagName(bag.getBagName())
+			.travelPlanId(bag.getTravelPlan().getId())
 			.bagMaterials(bagMaterials)
-			.travelPlanId(travelPlanId)
 			.build();
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagSimpleInfo {
+
+		private String bagName;
+		private Long travelPlanId;
+		private Long bagId;
+		private String bagContent;
+
+
+		public static GetBagSimpleInfo toDto(Bag bag) {
+			return GetBagSimpleInfo.builder()
+				.bagName(bag.getBagName())
+				.bagId(bag.getId())
+				.travelPlanId(bag.getTravelPlan().getId())
+				.bagContent(bag.getContent())
+				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagDetailInfo {
+
+		private Long countryId;
+		private String bagContent; //메모
+		private BagListWithMaterialInfo bagListWithMaterialInfo; //가방 물건들
+		private MaterialListByCountry materialListByCountry; //여행지별 추천 준비물
+
+		public static GetBagDetailInfo toDto(Bag bag, Long countryId,
+			BagListWithMaterialInfo bagListWithMaterialInfo,
+			MaterialListByCountry materialListByCountry) {
+			return GetBagDetailInfo.builder()
+				.countryId(countryId)
+				.bagContent(bag.getContent())
+				.bagListWithMaterialInfo(bagListWithMaterialInfo)
+				.materialListByCountry(materialListByCountry)
+				.build();
+		}
 	}
 
 }

@@ -48,7 +48,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _EMPTY_TAG(HttpStatus.CONFLICT, "TAG_001", "태그가 존재하지 않습니다."),
 
     //게시글 관련
-    _EMPTY_POST(HttpStatus.CONFLICT, "POST_001", "게시글이 존재하지 않습니다.");
+    _EMPTY_POST(HttpStatus.CONFLICT, "POST_001", "게시글이 존재하지 않습니다."),
+
+    //가방 관련
+    _EMPTY_BAG(HttpStatus.NOT_FOUND,"BAG_001","존재하지 않는 가방입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

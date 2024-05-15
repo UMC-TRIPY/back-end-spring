@@ -11,6 +11,7 @@ public class BagMaterialsResponseDto {
 	@AllArgsConstructor
 	public static class BagMaterialInfo {
 
+		private Long materialId;
 		private String materialName;
 		private Boolean isChecked;
 

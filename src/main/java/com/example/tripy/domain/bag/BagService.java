@@ -3,11 +3,21 @@ package com.example.tripy.domain.bag;
 import static com.example.tripy.domain.bag.dto.BagResponseDto.toBagListWithMaterialInfoDto;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
+import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
+import com.example.tripy.domain.bagmaterials.BagMaterials;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
+import com.example.tripy.domain.cityplan.CityPlan;
 import com.example.tripy.domain.cityplan.CityPlanRepository;
+import com.example.tripy.domain.countrymaterial.CountryMaterialService;
+import com.example.tripy.domain.material.Material;
+import com.example.tripy.domain.material.MaterialRepository;
+import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
+import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.travelplan.TravelPlan;
@@ -33,6 +43,8 @@ public class BagService {
 	private final MemberRepository memberRepository;
 	private final BagRepository bagRepository;
 	private final BagMaterialsRepository bagMaterialsRepository;
+	private final MaterialRepository materialRepository;
+	private final CountryMaterialService countryMaterialService;
 
 
 	// Bag에 대한 간단한 일정 정보 Dto에 매핑
@@ -100,8 +112,7 @@ public class BagService {
 				travelPlanId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
 
-		Bag bag = Bag.toEntity(createBagRequest, member, travelPlan);
-		bagRepository.save(bag);
+		saveBag(createBagRequest, member, travelPlan);
 
 		return "가방 추가 완료";
 	}
@@ -121,16 +132,129 @@ public class BagService {
 
 	public List<BagListWithMaterialInfo> getBagMaterialsAndIsCheckedByBags(List<Bag> bags) {
 		return bags.stream()
-			.map(bag -> {
-				List<BagMaterialInfo> bagMaterialInfos = bagMaterialsRepository.findBagMaterialsByBag(
-						bag).stream()
-					.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getMaterial().getName(),
-						bagMaterials.getIsChecked()))
-					.collect(Collectors.toList());
-				return toBagListWithMaterialInfoDto(bag.getBagName(), bagMaterialInfos,
-					bag.getTravelPlan().getId());
-			})
+			.map(this::getBagMaterials)
 			.collect(Collectors.toList());
 	}
+
+	@Transactional
+	public GetBagSimpleInfo updateMemo(UpdateBagContent updateBagContent, Long travelPlanId,
+		Long bagId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		bag.updateBagContent(updateBagContent.getBagContent());
+
+		return GetBagSimpleInfo.toDto(bag);
+	}
+
+	@Transactional
+	public BagListWithMaterialInfo addBagMaterial(CreateMaterialRequest createMaterialRequest,
+		Long travelPlanId,
+		Long bagId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		saveMaterialAndLinkToBag(bag, createMaterialRequest);
+
+		return getBagMaterials(bag);
+	}
+
+	private void saveBag(CreateBagRequest createBagRequest, Member member, TravelPlan travelPlan) {
+		Bag bag = Bag.toEntity(createBagRequest, member, travelPlan);
+		bagRepository.save(bag);
+	}
+
+	private void saveMaterialAndLinkToBag(Bag bag, CreateMaterialRequest createMaterialRequest) {
+		Material material = Material.toEntity(createMaterialRequest);
+		materialRepository.save(material);
+		saveBagMaterials(bag, material);
+	}
+
+	private void saveBagMaterials(Bag bag, Material material) {
+		BagMaterials bagMaterials = BagMaterials.toEntity(bag, material);
+		bagMaterialsRepository.save(bagMaterials);
+	}
+
+	private BagListWithMaterialInfo getBagMaterials(Bag bag) {
+		List<BagMaterialInfo> bagMaterialInfos = bagMaterialsRepository.findBagMaterialsByBag(
+				bag).stream()
+			.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getId(),
+				bagMaterials.getMaterial().getName(),
+				bagMaterials.getIsChecked()))
+			.collect(Collectors.toList());
+
+		return toBagListWithMaterialInfoDto(bag, bagMaterialInfos);
+	}
+
+	@Transactional
+	public BagListWithMaterialInfo updateBagMaterialName(
+		CreateMaterialRequest createMaterialRequest, Long travelPlanId, Long bagId,
+		Long materialId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
+
+		bagMaterial.updateMaterialName(createMaterialRequest.getMaterialName());
+
+		return getBagMaterials(bag);
+	}
+
+	private Bag getBag(Long bagId, Long travelPlanId) {
+		return bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
+	}
+
+	@Transactional
+	public BagListWithMaterialInfo deleteBagMaterial(Long travelPlanId, Long bagId,
+		Long materialId) {
+
+		Bag bag = getBag(bagId, travelPlanId);
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
+
+		bagMaterialsRepository.delete(bagMaterial);
+
+		return getBagMaterials(bag);
+	}
+
+	private BagMaterials getBagMaterials(Bag bag, Long materialId) {
+		return bagMaterialsRepository.findBagMaterialsByBagAndMaterialId(bag,
+			materialId);
+	}
+
+	@Transactional
+	public Boolean updateBagMaterialIsChecked(Long travelPlanId, Long bagId,
+		Long materialId) {
+		Bag bag = getBag(bagId, travelPlanId);
+		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
+
+		return bagMaterial.updateBagMaterialIsChecked();
+
+	}
+
+	public GetBagDetailInfo getBagDetail(Long travelPlanId, Long bagId) {
+
+		Member member = memberRepository.findById(1L)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+		Bag bag = getBag(bagId, travelPlanId);
+
+		BagListWithMaterialInfo bagListWithMaterialInfo = getBagMaterials(bag);
+
+		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
+			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+
+		Long countryId = getCountryIdByTravelPlan(travelPlan);
+
+		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(countryId);
+		return GetBagDetailInfo.toDto(bag, 1L, bagListWithMaterialInfo, materialListByCountry);
+	}
+
+	private Long getCountryIdByTravelPlan(TravelPlan travelPlan) {
+		CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(travelPlan)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
+		return cityPlan.getCity().getCountry().getId();
+	}
+
 
 }

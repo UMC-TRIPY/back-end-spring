@@ -8,4 +8,6 @@ public interface BagMaterialsRepository extends JpaRepository<BagMaterials, Long
 
 	List<BagMaterials> findBagMaterialsByBag(Bag bag);
 
+	BagMaterials findBagMaterialsByBagAndMaterialId(Bag bag, Long materialId);
+
 }
