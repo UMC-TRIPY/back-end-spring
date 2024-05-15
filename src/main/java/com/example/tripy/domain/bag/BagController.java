@@ -5,6 +5,7 @@ import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagListDetailInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
@@ -38,7 +39,7 @@ public class BagController {
 	/**
 	 * [GET] 내 여행 가방 모두 불러오기
 	 */
-	@Operation(summary = "내 여행 가방 모두 불러오기", description = "여행 가방이 존재하는 목록을 불러옵니다.")
+	@Operation(summary = "내 여행 가방 모두 불러오기 (내 가방 목록 조회)", description = "여행 가방이 존재하는 목록을 불러옵니다.")
 	@Parameter(name = "page", description = "내 여행 가방 목록 페이지 번호, query string 입니다.")
 	@Parameter(name = "size", description = "내 여행 가방 목록 페이지 번호, query string 입니다.")
 	@GetMapping("/members/bags")
@@ -175,6 +176,14 @@ public class BagController {
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId) {
 		return ApiResponse.onSuccess(bagService.getBagDetail(travelPlanId, bagId));
+	}
+
+	@Operation(summary = "내 가방 목록 상세 조회", description = "내 여행 계획에 해당하는 가방 목록을 상세 조회합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@GetMapping("/members/bags/{travelPlanId}")
+	public ApiResponse<GetBagListDetailInfo> getBagDetailListByTravelPlan(
+		@PathVariable(value = "travelPlanId") Long travelPlanId) {
+		return ApiResponse.onSuccess(bagService.getBagDetailListByTravelPlan(travelPlanId));
 	}
 
 }

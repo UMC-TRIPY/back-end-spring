@@ -7,7 +7,9 @@ import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagListDetailInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleListInfo;
 import com.example.tripy.domain.bagmaterials.BagMaterials;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
@@ -259,5 +261,24 @@ public class BagService {
 			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
 	}
 
+	public GetBagListDetailInfo getBagDetailListByTravelPlan(Long travelPlanId) {
+
+		Member member = memberRepository.findById(1L)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
+
+		List<GetBagSimpleListInfo> bags = bagRepository.findBagsByTravelPlan(travelPlan)
+			.stream()
+			.map(bag -> new GetBagSimpleListInfo(bag.getId(), bag.getBagName()))
+			.toList();
+
+		List<String> cities = cityPlanRepository.findAllByTravelPlan(travelPlan)
+			.stream()
+			.map(cityPlan -> cityPlan.getCity().getName())
+			.collect(Collectors.toList());
+
+		return GetBagListDetailInfo.toDto(bags, cities, travelPlan);
+	}
 
 }
