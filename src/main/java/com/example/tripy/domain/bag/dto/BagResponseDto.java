@@ -112,8 +112,8 @@ public class BagResponseDto {
 		private List<String> cities;
 		private List<GetBagSimpleListInfo> bags;
 
-		public static GetBagListDetailInfo toDto(List<GetBagSimpleListInfo> bags, List<String> cities,
-			TravelPlan travelPlan) {
+		public static GetBagListDetailInfo toDto(List<GetBagSimpleListInfo> bags,
+			List<String> cities, TravelPlan travelPlan) {
 			return GetBagListDetailInfo.builder()
 				.departure(travelPlan.getDeparture())
 				.arrival(travelPlan.getArrival())
