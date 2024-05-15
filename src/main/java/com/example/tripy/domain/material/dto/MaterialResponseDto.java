@@ -1,5 +1,6 @@
 package com.example.tripy.domain.material.dto;
 
+import com.example.tripy.domain.material.Material;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,17 +15,25 @@ public class MaterialResponseDto {
 	@Builder
 	public static class MaterialListByCountry {
 
-		private Long countryId;
-		private List<String> materials;
+		private List<CountryMaterialInfo> materials;
 
 	}
 
-	public static MaterialListByCountry toMaterialListByCountryDto(Long countryId,
-		List<String> materials) {
+	public static MaterialListByCountry toMaterialListByCountryDto(
+		List<CountryMaterialInfo> materials) {
 		return MaterialListByCountry.builder()
-			.countryId(countryId)
 			.materials(materials)
 			.build();
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class CountryMaterialInfo {
+
+		private Long materialId;
+		private String materialName;
+
 	}
 
 }

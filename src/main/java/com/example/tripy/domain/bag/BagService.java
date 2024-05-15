@@ -7,7 +7,9 @@ import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagListDetailInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
+import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleListInfo;
 import com.example.tripy.domain.bagmaterials.BagMaterials;
 import com.example.tripy.domain.bagmaterials.BagMaterialsRepository;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
@@ -108,9 +110,7 @@ public class BagService {
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		//bagExists 값이 True인 TravelPlan만 가능
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-				travelPlanId)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		saveBag(createBagRequest, member, travelPlan);
 
@@ -122,8 +122,7 @@ public class BagService {
 		Member member = memberRepository.findById(1L)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		List<Bag> bags = bagRepository.findBagsByTravelPlan(travelPlan);
 		return getBagMaterialsAndIsCheckedByBags(bags);
@@ -241,20 +240,45 @@ public class BagService {
 
 		BagListWithMaterialInfo bagListWithMaterialInfo = getBagMaterials(bag);
 
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		Long countryId = getCountryIdByTravelPlan(travelPlan);
 
-		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(countryId);
-		return GetBagDetailInfo.toDto(bag, 1L, bagListWithMaterialInfo, materialListByCountry);
+		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(
+			countryId);
+		return GetBagDetailInfo.toDto(bag, countryId, bagListWithMaterialInfo,
+			materialListByCountry);
 	}
 
 	private Long getCountryIdByTravelPlan(TravelPlan travelPlan) {
-		CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(travelPlan)
+		CityPlan cityPlan = cityPlanRepository.findTopByTravelPlan(travelPlan)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
 		return cityPlan.getCity().getCountry().getId();
 	}
 
+	private TravelPlan getTravelPlanById(Member member, Long travelPlanId) {
+		return travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member, travelPlanId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
+	}
+
+	public GetBagListDetailInfo getBagDetailListByTravelPlan(Long travelPlanId) {
+
+		Member member = memberRepository.findById(1L)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
+
+		List<GetBagSimpleListInfo> bags = bagRepository.findBagsByTravelPlan(travelPlan)
+			.stream()
+			.map(bag -> new GetBagSimpleListInfo(bag.getId(), bag.getBagName()))
+			.toList();
+
+		List<String> cities = cityPlanRepository.findAllByTravelPlan(travelPlan)
+			.stream()
+			.map(cityPlan -> cityPlan.getCity().getName())
+			.collect(Collectors.toList());
+
+		return GetBagListDetailInfo.toDto(bags, cities, travelPlan);
+	}
 
 }

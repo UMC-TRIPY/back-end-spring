@@ -10,5 +10,5 @@ public interface CityPlanRepository extends JpaRepository<CityPlan, Long> {
 
     List<CityPlan> findAllByTravelPlan(TravelPlan travelPlan);
 
-    Optional<CityPlan> findCityPlanByTravelPlan(TravelPlan travelPlan);
+    Optional<CityPlan> findTopByTravelPlan(TravelPlan travelPlan);
 }

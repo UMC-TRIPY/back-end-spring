@@ -101,4 +101,44 @@ public class BagResponseDto {
 		}
 	}
 
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagListDetailInfo {
+
+		private Date departure;
+		private Date arrival;
+		private List<String> cities;
+		private List<GetBagSimpleListInfo> bags;
+
+		public static GetBagListDetailInfo toDto(List<GetBagSimpleListInfo> bags,
+			List<String> cities, TravelPlan travelPlan) {
+			return GetBagListDetailInfo.builder()
+				.departure(travelPlan.getDeparture())
+				.arrival(travelPlan.getArrival())
+				.cities(cities)
+				.bags(bags)
+				.build();
+		}
+
+	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class GetBagSimpleListInfo {
+
+		private Long bagId;
+		private String bagName;
+
+		public static GetBagSimpleListInfo toDto(Bag bag) {
+			return GetBagSimpleListInfo.builder()
+				.bagId(bag.getId())
+				.bagName(bag.getBagName())
+				.build();
+		}
+	}
+
 }
