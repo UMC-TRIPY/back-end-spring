@@ -108,9 +108,7 @@ public class BagService {
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		//bagExists 값이 True인 TravelPlan만 가능
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-				travelPlanId)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		saveBag(createBagRequest, member, travelPlan);
 
@@ -122,8 +120,7 @@ public class BagService {
 		Member member = memberRepository.findById(1L)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		List<Bag> bags = bagRepository.findBagsByTravelPlan(travelPlan);
 		return getBagMaterialsAndIsCheckedByBags(bags);
@@ -241,12 +238,12 @@ public class BagService {
 
 		BagListWithMaterialInfo bagListWithMaterialInfo = getBagMaterials(bag);
 
-		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member,
-			travelPlanId).orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
+		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
 		Long countryId = getCountryIdByTravelPlan(travelPlan);
 
-		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(countryId);
+		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(
+			countryId);
 		return GetBagDetailInfo.toDto(bag, 1L, bagListWithMaterialInfo, materialListByCountry);
 	}
 
@@ -254,6 +251,11 @@ public class BagService {
 		CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(travelPlan)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
 		return cityPlan.getCity().getCountry().getId();
+	}
+
+	private TravelPlan getTravelPlanById(Member member, Long travelPlanId) {
+		return travelPlanRepository.findByMemberAndIdAndBagExistsIsTrue(member, travelPlanId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
 	}
 
 
