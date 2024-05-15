@@ -91,7 +91,6 @@ public class BagController {
 		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId));
 	}
 
-
 	/**
 	 * [PATCH] 여행 가방 메모 작성하기
 	 */
