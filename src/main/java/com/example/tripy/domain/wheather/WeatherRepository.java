@@ -1,6 +1,9 @@
 package com.example.tripy.domain.wheather;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +23,13 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
         )
     List<Object[]> findAllByCityNameAndByDateTime(String cityName);
 
+
+    @Query("SELECT w.temp " +
+        "FROM Weather w " +
+        "WHERE w.cityName = :cityName " +
+        "AND w.weatherDate = :currentDate " +
+        "AND w.weatherTime <= :currentTime " +
+        "ORDER BY w.weatherDate DESC " +
+        "LIMIT 1")
+    double findClosestTemperature(String cityName, LocalDate currentDate, LocalTime currentTime);
 }
