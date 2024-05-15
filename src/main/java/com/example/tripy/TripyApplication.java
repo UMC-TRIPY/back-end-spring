@@ -22,17 +22,17 @@ public class TripyApplication {
         SpringApplication.run(TripyApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                    .allowedOrigins("*")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE")
-                    .allowedHeaders("*")
-                    .maxAge(3000);
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                    .allowedOrigins("*")
+//                    .allowedMethods("GET", "POST", "PUT", "DELETE")
+//                    .allowedHeaders("*")
+//                    .maxAge(3000);
+//            }
+//        };
+//    }
 }
