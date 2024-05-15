@@ -97,7 +97,7 @@ public class BagController {
 	@Operation(summary = "가방 내부에 메모 작성하기", description = "가방 내부에 메모를 작성합니다.")
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
 	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
-	@PatchMapping("/members/bags/{travelPlanId}/{bagId}")
+	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/memo")
 	public ApiResponse<GetBagSimpleInfo> updateMemo(@RequestBody UpdateBagContent updateBagContent,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId) {
@@ -167,7 +167,10 @@ public class BagController {
 			bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
 	}
 
-	@GetMapping("/members/bags/{travelPlanId}/detail/{bagId})")
+	@Operation(summary = "여행 가방 개별 상세조회", description = "가방을 상세 조회합니다.")
+	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
+	@Parameter(name = "bagId", description = "가방 Id, Path Variable 입니다.")
+	@GetMapping("/members/bags/{travelPlanId}/{bagId}/detail)")
 	public ApiResponse<GetBagDetailInfo> getBagDetail(
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
 		@PathVariable(value = "bagId") Long bagId) {

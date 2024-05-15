@@ -244,11 +244,12 @@ public class BagService {
 
 		MaterialListByCountry materialListByCountry = countryMaterialService.getCountryMaterials(
 			countryId);
-		return GetBagDetailInfo.toDto(bag, 1L, bagListWithMaterialInfo, materialListByCountry);
+		return GetBagDetailInfo.toDto(bag, countryId, bagListWithMaterialInfo,
+			materialListByCountry);
 	}
 
 	private Long getCountryIdByTravelPlan(TravelPlan travelPlan) {
-		CityPlan cityPlan = cityPlanRepository.findCityPlanByTravelPlan(travelPlan)
+		CityPlan cityPlan = cityPlanRepository.findTopByTravelPlan(travelPlan)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_CITY));
 		return cityPlan.getCity().getCountry().getId();
 	}
