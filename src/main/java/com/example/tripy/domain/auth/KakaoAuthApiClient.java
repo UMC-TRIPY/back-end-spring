@@ -1,8 +1,12 @@
 package com.example.tripy.domain.auth;
 
 import com.example.tripy.domain.auth.dto.AuthResponseDto.KakaoAccessTokenResponse;
+import com.example.tripy.domain.auth.dto.AuthResponseDto.OIDCPublicKeysResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,4 +22,14 @@ public interface KakaoAuthApiClient {
     );
 
 
+    //@Cacheable(cacheNames = "KakaoOIDC", cacheManager = "oidcCacheManager")
+    @GetMapping("/.well-known/jwks.json")
+    OIDCPublicKeysResponse getKakaoOIDCOpenKeys();
+
+
+
+
+
 }
+
+

@@ -19,5 +19,9 @@ public class AuthController {
         return kakaoAuthService.getOuth2Authentication(code);
 
     }
+    @PostMapping("/caching")
+    public void updateOpenKey(){
+        kakaoAuthService.updateOpenKeyTestRedis();
+    }
 
 }
