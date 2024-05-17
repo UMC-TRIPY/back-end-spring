@@ -7,7 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-public class WheatherResponseDto {
+public class WeatherResponseDto {
+    private static final int CITY_NAME = 0;
+    private static final int TEMP_MAX = 1;
+    private static final int TEMP_MIN = 2;
+    private static final int WEATHER_DATE = 3;
 
 
     @Getter
@@ -26,10 +30,10 @@ public class WheatherResponseDto {
 
         public static WhetherResponseSimpleInfo toDto(Object[] object) {
             return WhetherResponseSimpleInfo.builder()
-                .cityName(object[0].toString())
-                .tempMax(Double.valueOf(object[1].toString()))
-                .tempMin(Double.valueOf(object[2].toString()))
-                .weatherDate(object[3].toString())
+                .cityName(object[CITY_NAME].toString())
+                .tempMax(Double.valueOf(object[TEMP_MAX].toString()))
+                .tempMin(Double.valueOf(object[TEMP_MIN].toString()))
+                .weatherDate(object[WEATHER_DATE].toString())
                 .build();
         }
     }
@@ -40,11 +44,12 @@ public class WheatherResponseDto {
     @Builder
     public static class WhetherResponseInfo {
         Number currentTemp;
-//        String weatherMain;
+        String weatherMain;
         List<WhetherResponseSimpleInfo> whetherResponseSimpleInfoList;
-        public static WhetherResponseInfo toDto(Double temp, List<WhetherResponseSimpleInfo> whetherResponseSimpleInfoList) {
+        public static WhetherResponseInfo toDto(Float temp, String weatherMain, List<WhetherResponseSimpleInfo> whetherResponseSimpleInfoList) {
             return WhetherResponseInfo.builder()
                 .currentTemp(temp)
+                .weatherMain(weatherMain)
                 .whetherResponseSimpleInfoList(whetherResponseSimpleInfoList)
                 .build();
         }

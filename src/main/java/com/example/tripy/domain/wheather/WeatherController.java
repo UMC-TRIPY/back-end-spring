@@ -1,6 +1,6 @@
 package com.example.tripy.domain.wheather;
 
-import com.example.tripy.domain.wheather.dto.WheatherResponseDto.WhetherResponseInfo;
+import com.example.tripy.domain.wheather.dto.WeatherResponseDto.WhetherResponseInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
