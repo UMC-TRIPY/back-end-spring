@@ -2,8 +2,6 @@ package com.example.tripy.domain.auth;
 
 import com.example.tripy.domain.auth.dto.AuthResponseDto.KakaoAccessTokenResponse;
 import com.example.tripy.domain.auth.dto.AuthResponseDto.OIDCPublicKeysResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -44,10 +44,10 @@ public class AuthResponseDto {
 
     }
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public record OIDCPublicKeysResponse(List<Key> keys) {
+    public record OIDCPublicKeysResponse(List<OIDCPublicKey> keys) {
     }
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public record Key(
+    public record OIDCPublicKey(
         String kid,
         String kty,
         String alg,
@@ -56,23 +56,20 @@ public class AuthResponseDto {
         String e
     ) {
     }
-//    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    public record OIDCPublicKeysResponse(
-//        String issuer,
-//        String authorization_endpoint,
-//        String token_endpoint,
-//        String userinfo_endpoint,
-//        String jwks_uri,
-//        List<String> token_endpoint_auth_methods_supported,
-//        List<String> subject_types_supported,
-//        List<String> id_token_signing_alg_values_supported,
-//        Boolean request_uri_parameter_supported,
-//        List<String> response_types_supported,
-//        List<String> response_modes_supported,
-//        List<String> grant_types_supported,
-//        List<String> code_challenge_methods_supported,
-//        List<String> claims_supported
-//    ) {}
+
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public record OIDCDecodePayload(
+        String issuer,
+        String audience,
+        String subject,
+        String email,
+        String nickName,
+        String picture
+
+    ){
+    }
+
+
 
 
 
