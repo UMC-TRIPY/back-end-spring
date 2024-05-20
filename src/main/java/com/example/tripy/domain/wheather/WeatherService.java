@@ -2,19 +2,16 @@ package com.example.tripy.domain.wheather;
 
 import com.example.tripy.domain.city.City;
 import com.example.tripy.domain.city.CityRepository;
-import com.example.tripy.domain.wheather.dto.WheatherResponseDto.WhetherResponseInfo;
-import com.example.tripy.domain.wheather.dto.WheatherResponseDto.WhetherResponseSimpleInfo;
+import com.example.tripy.domain.wheather.dto.WeatherResponseDto.WhetherResponseInfo;
+import com.example.tripy.domain.wheather.dto.WeatherResponseDto.WhetherResponseSimpleInfo;
 import com.example.tripy.global.common.response.code.status.ErrorStatus;
 import com.example.tripy.global.common.response.exception.GeneralException;
+import jakarta.persistence.Tuple;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.swing.plaf.IconUIResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +38,11 @@ public class WeatherService {
         LocalDate nowDate = LocalDate.now();
         LocalTime nowTime = LocalTime.now();
 
-        double temp = weatherRepository.findClosestTemperature(
+        Tuple curInfo = weatherRepository.findClosestTemperature(
             city.getName(), nowDate, nowTime);
+        Float temp = (Float) curInfo.get("temp");
+        String weatherMain = curInfo.get("weatherMain").toString();
 
-        return WhetherResponseInfo.toDto(temp, whetherResponseSimpleInfoList);
+        return WhetherResponseInfo.toDto(temp, weatherMain, whetherResponseSimpleInfoList);
     }
 }
