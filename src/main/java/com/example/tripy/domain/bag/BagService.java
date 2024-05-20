@@ -50,6 +50,7 @@ public class BagService {
     public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size,
         Long memberId) {
 
+        System.out.println(memberId);
         Pageable pageable = PageRequest.of(page, size);
         Page<TravelPlan> result = travelPlanRepository.findAllByMemberIdAndBagExistsIsTrue(memberId,
             pageable);

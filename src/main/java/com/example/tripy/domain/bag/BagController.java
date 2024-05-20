@@ -1,8 +1,10 @@
 package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.common.PageResponseDto;
 import com.example.tripy.global.response.ApiResponse;
+import com.example.tripy.global.security.CurrentUser;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +25,12 @@ public class BagController {
     /**
      * [GET] 내 여행 가방 모두 불러오기
      */
-    @GetMapping("/member/bag/{memberId}")
+
+    @GetMapping("/member/bag")
     public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
-        @PathVariable(value = "memberId") Long memberId, @RequestParam(value = "page") int page,
+        @CurrentUser Member member, @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size) {
-        return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, memberId));
+        return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, member.getId()));
     }
 
     /**
