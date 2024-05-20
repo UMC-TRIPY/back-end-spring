@@ -8,11 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Member extends BaseTimeEntity implements UserDetails {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,48 +35,34 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @NotNull
     private String email;
 
-    @NotNull
-    private String password;
 
     private String profileImgUrl;
 
+    @NotNull
     private SocialType socialType;
 
-    @Column(length = 100, nullable = false, unique = true)
-    private String keyCode; //로그인 식별키
+    private String accessToken;
+    private String refreshToken;
+
 
     public String getPayload(){
-        return this.getId()+"tripy";
+        return this.getId()+"+tripy";
+    }
+
+    public static Member toEntity(String email, String nickName, String profileImgUrl,
+        SocialType socialType){
+        return Member.builder()
+            .nickName(nickName)
+            .email(email)
+            .profileImgUrl(profileImgUrl)
+            .socialType(socialType)
+            .build();
+    }
+
+    public void updateToken(String accessToken, String refreshToken){
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return keyCode;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
