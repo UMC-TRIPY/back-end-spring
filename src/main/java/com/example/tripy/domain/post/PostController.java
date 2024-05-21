@@ -1,56 +1,86 @@
 package com.example.tripy.domain.post;
 
-import com.example.tripy.domain.post.dto.PostCreateRequestDto;
-import com.example.tripy.domain.post.dto.PostResponseDto;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostDetailInfo;
+import com.example.tripy.domain.post.dto.PostResponseDto.GetPostSimpleInfo;
+import com.example.tripy.global.common.PageResponseDto;
+import com.example.tripy.global.response.ApiResponse;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
 public class PostController {
+
     private final PostService postService;
 
     /**
      * [POST] 게시글 작성
      */
-    @PostMapping
-    public ResponseEntity<?> addCorporation(@RequestPart(value = "postCreateRequestDto") @Parameter(schema = @Schema(type = "string", format = MediaType.APPLICATION_JSON_VALUE)) PostCreateRequestDto postCreateRequestDto) throws IOException {
-        postService.addPost(postCreateRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-
-    /**
-     * [GET] 전체 글 조회
-     */
-    @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getPostList(){
-        return ResponseEntity.ok(postService.getPostList());
+    @PostMapping("api/posts")
+    public ApiResponse<String> createPost(
+        @RequestBody CreatePostRequest createPostRequest,
+        @RequestParam(required = false) Long travelPlanId,
+        @RequestParam Long cityId) {
+        postService.addPost(createPostRequest, travelPlanId, cityId);
+        return ApiResponse.onSuccess("글 작성에 성공했습니다.");
     }
 
     /**
-     * [GET] 도시가 속한 나라별 전체 글 조회
+     * [DELETE] 게시글 삭제
      */
-//    @GetMapping("/{cityId}")
-//    public ResponseEntity<List<PostResponseDto>> getPostListByCity(@PathVariable Long cityId){
-//        return ResponseEntity.ok(postService.getPostList(cityId));
-//    }
-
-    /**
-     * [GET] 특정 글 상세 조회
-     */
-    @GetMapping("/detail/{postId}")
-    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId){
-        return ResponseEntity.ok(postService.getPostDetail(postId));
+    @DeleteMapping("api/posts/{postsId}")
+    public ApiResponse<String> deletePost(
+        @PathVariable   Long postsId) {
+        postService.deletePost(postsId);
+        return ApiResponse.onSuccess("글 삭제에 성공했습니다.");
     }
 
+    /**
+     * [GET] 인기글 TOP 조회
+     */
+    @GetMapping("api/posts/top")
+    public ApiResponse<List<GetPostSimpleInfo>> findPostsTopten(
+        @RequestParam Long countryId,
+        @RequestParam int num
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsTop(countryId, num));
+    }
 
+    /**
+     * [GET] 전체 글 추천 많은 순 조회
+     */
+    @GetMapping("api/posts/top-recommended")
+    public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostTopRecommended(
+        @RequestParam Long countryId,
+        @RequestParam int page, @RequestParam int size
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsTopRecommended(countryId, page, size));
+    }
+
+    /**
+     * [GET] 전체글 최신 순 조회
+     */
+    @GetMapping("api/posts/latest")
+    public ApiResponse<PageResponseDto<List<GetPostSimpleInfo>>> findPostLatest(
+        @RequestParam Long countryId,
+        @RequestParam int page, @RequestParam int size
+    ) {
+        return ApiResponse.onSuccess(postService.findPostsLatest(countryId, page, size));
+    }
+
+    /**
+     * [GET] 게시글 상세 조회
+     */
+    @GetMapping("api/posts/{postsId}")
+    public ApiResponse<GetPostDetailInfo> findPost(@PathVariable Long postsId) {
+        return ApiResponse.onSuccess(postService.findPost(postsId));
+    }
 }

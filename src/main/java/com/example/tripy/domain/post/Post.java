@@ -1,13 +1,11 @@
 package com.example.tripy.domain.post;
 
 import com.example.tripy.domain.city.City;
-import com.example.tripy.domain.post.dto.PostCreateRequestDto;
-import com.example.tripy.domain.postfile.PostFile;
-import com.example.tripy.domain.posttag.PostTag;
-import com.example.tripy.domain.travelplan.TravelPlan;
+import com.example.tripy.domain.country.Country;
 import com.example.tripy.domain.member.Member;
+import com.example.tripy.domain.post.dto.PostRequestDto.CreatePostRequest;
+import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.global.utils.BaseTimeEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,11 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,13 +37,14 @@ public class Post extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    private String address;
+    @ColumnDefault("0")
+    private Long view = 0L;
 
     @ColumnDefault("0")
-    private Long view;
+    private Integer recommendationCount = 0;
 
     @ColumnDefault("0")
-    private Integer thumbs;
+    private int rank;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -59,31 +54,21 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "city_id")
     private City city;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
     private TravelPlan travelPlan;
 
-    public void viewCountUp() {
-        this.view++;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Country country;
 
-    public void thumbsCountUp() {
-        this.thumbs++;
-    }
-
-    public void thumbsCountDown() {
-        this.thumbs--;
-    }
-
-    // TODO: 2024/01/05 PostFile, PostTag리스트 추가
-    public static Post toEntity(PostCreateRequestDto requestDto, TravelPlan travelPlan){
+    public static Post toEntity(CreatePostRequest createPostRequest, Member member, City city
+        , TravelPlan travelPlan) {
         return Post.builder()
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .address(requestDto.getAddress())
-                .travelPlan(travelPlan)
-                .build();
+            .title(createPostRequest.getTitle())
+            .content(createPostRequest.getContent())
+            .member(member)
+            .city(city)
+            .travelPlan(travelPlan)
+            .build();
     }
-
 }

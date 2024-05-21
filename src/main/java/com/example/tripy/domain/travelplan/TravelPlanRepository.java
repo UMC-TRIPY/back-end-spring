@@ -10,6 +10,9 @@ public interface TravelPlanRepository extends JpaRepository<TravelPlan, Long> {
 
     Optional<TravelPlan> findByMemberAndIdAndBagExistsIsFalse(Member member, Long id);
 
-    Page<TravelPlan> findAllByMemberIdAndBagExistsIsTrue(Long memberId, Pageable pageable);
+    Page<TravelPlan> findAllByMemberAndBagExistsIsTrue(Member member, Pageable pageable);
+
+    Optional<TravelPlan> findByMemberAndIdAndBagExistsIsTrue(Member member, Long id);
+
 
 }

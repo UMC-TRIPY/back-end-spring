@@ -27,7 +27,6 @@ public class CurrencyResponseDto {
             .deal(entity.getDeal())
             .currencyUnit(entity.getCurrencyUnit())
             .currencyName(entity.getCurrencyName())
-            .countryName(entity.getCountryName())
             .build();
     }
 

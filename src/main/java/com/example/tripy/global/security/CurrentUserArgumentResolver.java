@@ -52,7 +52,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
             String userId = targetSubject.substring(0, index);
 
             return memberRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_USER));
+                .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
         } catch (Exception ex) {
             throw new GeneralException(ErrorStatus._INVALID_JWT);
         }
