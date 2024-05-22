@@ -1,7 +1,7 @@
 package com.example.tripy.domain.currency;
 
 import com.example.tripy.domain.currency.dto.CurrencyResponseDto;
-import com.example.tripy.global.common.response.ApiResponse;
+import com.example.tripy.global.response.ApiResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -10,11 +10,13 @@ import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
-import com.example.tripy.global.common.dto.PageResponseDto;
-import com.example.tripy.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.tripy.domain.member.Member;
+import com.example.tripy.global.common.PageResponseDto;
+import com.example.tripy.global.response.ApiResponse;
+import com.example.tripy.global.security.CurrentUser;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,17 +38,17 @@ public class BagController {
 	private final BagService bagService;
 	private final CountryMaterialService countryMaterialService;
 
-	/**
-	 * [GET] 내 여행 가방 모두 불러오기
-	 */
-	@Operation(summary = "내 여행 가방 모두 불러오기 (내 가방 목록 조회)", description = "여행 가방이 존재하는 목록을 불러옵니다.")
-	@Parameter(name = "page", description = "내 여행 가방 목록 페이지 번호, query string 입니다.")
-	@Parameter(name = "size", description = "내 여행 가방 목록 페이지 번호, query string 입니다.")
-	@GetMapping("/members/bags")
-	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
-		@RequestParam(value = "page") int page, @RequestParam(value = "size") int size) {
-		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size));
-	}
+
+    /**
+     * [GET] 내 여행 가방 모두 불러오기
+     */
+
+    @GetMapping("/member/bag")
+    public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
+        @CurrentUser Member member, @RequestParam(value = "page") int page,
+        @RequestParam(value = "size") int size) {
+        return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, member.getId()));
+    }
 
 	/**
 	 * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기

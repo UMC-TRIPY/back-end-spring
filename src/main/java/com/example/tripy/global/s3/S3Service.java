@@ -12,8 +12,8 @@ import com.example.tripy.domain.conversation.dto.ConversationRequestDto.Conversa
 import com.example.tripy.domain.country.Country;
 import com.example.tripy.domain.country.CountryRepository;
 import com.example.tripy.domain.language.LanguageRepository;
-import com.example.tripy.global.common.response.code.status.ErrorStatus;
-import com.example.tripy.global.common.response.exception.GeneralException;
+import com.example.tripy.global.response.code.status.ErrorStatus;
+import com.example.tripy.global.response.exception.GeneralException;
 import com.example.tripy.global.s3.dto.S3Result;
 import java.io.BufferedReader;
 import java.io.IOException;

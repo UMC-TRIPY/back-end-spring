@@ -1,7 +1,7 @@
-package com.example.tripy.global.common.response.code.status;
+package com.example.tripy.global.response.code.status;
 
-import com.example.tripy.global.common.response.code.BaseErrorCode;
-import com.example.tripy.global.common.response.code.ErrorReasonDto;
+import com.example.tripy.global.response.code.BaseErrorCode;
+import com.example.tripy.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -17,10 +17,13 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //멤버 관련
     _EMPTY_MEMBER(HttpStatus.CONFLICT, "MEMBER_001", "존재하지 않는 사용자입니다."),
+    _INVALID_MEMBER(HttpStatus.CONFLICT, "MEMBER_002", "존재하지 않는 사용자입니다."),
 
     //인증 관련
     _EMPTY_JWT(HttpStatus.UNAUTHORIZED, "AUTH_001", "JWT가 존재하지 않습니다."),
     _INVALID_JWT(HttpStatus.UNAUTHORIZED, "AUTH_002", "유효하지 않은 JWT입니다."),
+    _EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "AUTH_003", "만료된 JWT입니다"),
+    _EXPIRED_AUTHORIZATION_CODE(HttpStatus.UNAUTHORIZED, "AUTH_004", "만료된 authorization code 입니다"),
 
     //통화 관련
     _EMPTY_CURRENCY(HttpStatus.CONFLICT, "CUR_001", "환율정보가 존재하지 않습니다."),

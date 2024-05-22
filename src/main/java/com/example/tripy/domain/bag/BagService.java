@@ -24,9 +24,9 @@ import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
-import com.example.tripy.global.common.dto.PageResponseDto;
-import com.example.tripy.global.common.response.code.status.ErrorStatus;
-import com.example.tripy.global.common.response.exception.GeneralException;
+import com.example.tripy.global.common.PageResponseDto;
+import com.example.tripy.global.response.code.status.ErrorStatus;
+import com.example.tripy.global.response.exception.GeneralException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,10 +70,10 @@ public class BagService {
 
 
 	// 내 일정에 맞는 가방 목록 모두 불러오기
-	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size) {
+	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size, Long id) {
 
 		// Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(1L)
+		Member member = memberRepository.findById(id)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		Pageable pageable = PageRequest.of(page, size);

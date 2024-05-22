@@ -21,6 +21,17 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2023.0.0")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+
 dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -38,6 +49,42 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //oauth 2.0
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
+    //kakao access token을 가져오기 위한 Oauth 서버와의 통신을 위한 webclient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'io.projectreactor.netty:reactor-netty'
+
+    //redis & cache
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    //spring-cloud & openfeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+
+
+
+
+
+
+    //oauth2-client
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    //Oauth 서버와의 통신을 위한 webclient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 }
 

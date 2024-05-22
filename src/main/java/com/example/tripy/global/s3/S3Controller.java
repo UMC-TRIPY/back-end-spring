@@ -1,12 +1,12 @@
 package com.example.tripy.global.s3;
 
-import com.example.tripy.global.common.response.code.status.ErrorStatus;
-import com.example.tripy.global.common.response.exception.GeneralException;
+
+import com.example.tripy.global.response.code.status.ErrorStatus;
+import com.example.tripy.global.response.exception.GeneralException;
 import com.example.tripy.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

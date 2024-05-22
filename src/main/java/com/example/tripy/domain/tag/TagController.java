@@ -1,10 +1,10 @@
 package com.example.tripy.domain.tag;
 
-import com.example.tripy.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.tripy.global.response.ApiResponse;
 
 @RequiredArgsConstructor
 @RestController

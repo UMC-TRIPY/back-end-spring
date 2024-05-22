@@ -1,7 +1,7 @@
-package com.example.tripy.global.common.response.exception;
+package com.example.tripy.global.response.exception;
 
-import com.example.tripy.global.common.response.code.BaseErrorCode;
-import com.example.tripy.global.common.response.code.ErrorReasonDto;
+import com.example.tripy.global.response.code.BaseErrorCode;
+import com.example.tripy.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

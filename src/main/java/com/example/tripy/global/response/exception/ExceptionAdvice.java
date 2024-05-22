@@ -1,8 +1,8 @@
-package com.example.tripy.global.common.response.exception;
+package com.example.tripy.global.response.exception;
 
-import com.example.tripy.global.common.response.ApiResponse;
-import com.example.tripy.global.common.response.code.ErrorReasonDto;
-import com.example.tripy.global.common.response.code.status.ErrorStatus;
+import com.example.tripy.global.response.ApiResponse;
+import com.example.tripy.global.response.code.ErrorReasonDto;
+import com.example.tripy.global.response.code.status.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.util.LinkedHashMap;
