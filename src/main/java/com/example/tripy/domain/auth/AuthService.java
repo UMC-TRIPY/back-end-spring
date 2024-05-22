@@ -11,7 +11,6 @@ import com.example.tripy.global.security.JwtTokenProvider;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -2,6 +2,7 @@ package com.example.tripy.domain.auth;
 
 
 import com.example.tripy.domain.auth.dto.AuthResponseDto.LoginSimpleInfo;
+import com.example.tripy.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,9 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "로그인/회원가입 api", description = "code : Authorization code / 회원가입, 로그인 구분 없이 동일한 API 사용")
-    public LoginSimpleInfo getIdToken(@RequestParam String code){
+    public ApiResponse<LoginSimpleInfo> getIdToken(@RequestParam String code){
         String idToken = authService.getOauth2Authentication(code);
-        return authService.login(idToken);
+        return ApiResponse.onSuccess(authService.login(idToken));
     }
 
 
