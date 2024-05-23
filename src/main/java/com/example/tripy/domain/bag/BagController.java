@@ -10,13 +10,13 @@ import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagSimpleInfo;
 import com.example.tripy.domain.countrymaterial.CountryMaterialService;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import com.example.tripy.domain.member.Member;
 import com.example.tripy.global.common.PageResponseDto;
 import com.example.tripy.global.response.ApiResponse;
 import com.example.tripy.global.security.CurrentUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,16 +39,16 @@ public class BagController {
 	private final CountryMaterialService countryMaterialService;
 
 
-    /**
-     * [GET] 내 여행 가방 모두 불러오기
-     */
+	/**
+	 * [GET] 내 여행 가방 모두 불러오기
+	 */
 
-    @GetMapping("/member/bag")
-    public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
-        @CurrentUser Member member, @RequestParam(value = "page") int page,
-        @RequestParam(value = "size") int size) {
-        return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, member.getId()));
-    }
+	@GetMapping("/member/bag")
+	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
+		@CurrentUser Member member, @RequestParam(value = "page") int page,
+		@RequestParam(value = "size") int size) {
+		return ApiResponse.onSuccess(bagService.getTravelBagExistsList(page, size, member));
+	}
 
 	/**
 	 * [POST] 내 여행 일정 목록에서 해당하는 가방 목록 생성하기
@@ -56,9 +56,9 @@ public class BagController {
 	@Operation(summary = "내 여행 일정 목록에서 해당하는 가방 목록 생성하기", description = "여행 일정 목록에서 가방을 생성하기 위해 해당하는 가방 목록을 생성합니다.")
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
 	@PostMapping("/members/bags/{travelPlanId}")
-	public ApiResponse<String> updateBagExists(
+	public ApiResponse<String> updateBagExists(@CurrentUser Member member,
 		@PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.updateBagExists(travelPlanId));
+		return ApiResponse.onSuccess(bagService.updateBagExists(travelPlanId, member));
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class BagController {
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, query string 입니다.")
 	@PostMapping("/members/bags")
 	public ApiResponse<String> createBag(@RequestBody CreateBagRequest createBagRequest,
-		@RequestParam Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId));
+		@RequestParam Long travelPlanId, @CurrentUser Member member) {
+		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId, member));
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class BagController {
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
 	@GetMapping("/members/materials/{travelPlanId}")
 	public ApiResponse<List<BagListWithMaterialInfo>> getBagsListAndMaterialsByTravelPlan(
-		@PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId));
+		@PathVariable(value = "travelPlanId") Long travelPlanId, @CurrentUser Member member) {
+		return ApiResponse.onSuccess(bagService.getBagsListAndMaterialsByTravelPlan(travelPlanId, member));
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class BagController {
 	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/memo")
 	public ApiResponse<GetBagSimpleInfo> updateMemo(@RequestBody UpdateBagContent updateBagContent,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId) {
-		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId));
+		@PathVariable(value = "bagId") Long bagId, @CurrentUser Member member) {
+		return ApiResponse.onSuccess(bagService.updateMemo(updateBagContent, travelPlanId, bagId, member));
 	}
 
 	/**
@@ -117,9 +117,9 @@ public class BagController {
 	public ApiResponse<BagListWithMaterialInfo> addBagMaterial(
 		@RequestBody CreateMaterialRequest createMaterialRequest,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId) {
+		@PathVariable(value = "bagId") Long bagId, @CurrentUser Member member) {
 		return ApiResponse.onSuccess(
-			bagService.addBagMaterial(createMaterialRequest, travelPlanId, bagId));
+			bagService.addBagMaterial(createMaterialRequest, travelPlanId, bagId, member));
 	}
 
 
@@ -134,10 +134,10 @@ public class BagController {
 	public ApiResponse<BagListWithMaterialInfo> updateBagMaterialName(
 		@RequestBody CreateMaterialRequest updateMaterialRequest,
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId, @CurrentUser Member member) {
 		return ApiResponse.onSuccess(
 			bagService.updateBagMaterialName(updateMaterialRequest, travelPlanId, bagId,
-				materialId));
+				materialId, member));
 	}
 
 	/**
@@ -150,9 +150,9 @@ public class BagController {
 	@DeleteMapping("/members/bags/{travelPlanId}/{bagId}/materials")
 	public ApiResponse<BagListWithMaterialInfo> deleteBagMaterial(
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId , @CurrentUser Member member) {
 		return ApiResponse.onSuccess(
-			bagService.deleteBagMaterial(travelPlanId, bagId, materialId));
+			bagService.deleteBagMaterial(travelPlanId, bagId, materialId, member));
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class BagController {
 	@PatchMapping("/members/bags/{travelPlanId}/{bagId}/materials/check")
 	public ApiResponse<Boolean> updateBagMaterialIsChecked(
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId) {
+		@PathVariable(value = "bagId") Long bagId, @RequestParam Long materialId, @CurrentUser Member member) {
 		return ApiResponse.onSuccess(
-			bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId));
+			bagService.updateBagMaterialIsChecked(travelPlanId, bagId, materialId, member));
 	}
 
 	@Operation(summary = "여행 가방 개별 상세조회", description = "가방을 상세 조회합니다.")
@@ -176,16 +176,16 @@ public class BagController {
 	@GetMapping("/members/bags/{travelPlanId}/{bagId}/detail)")
 	public ApiResponse<GetBagDetailInfo> getBagDetail(
 		@PathVariable(value = "travelPlanId") Long travelPlanId,
-		@PathVariable(value = "bagId") Long bagId) {
-		return ApiResponse.onSuccess(bagService.getBagDetail(travelPlanId, bagId));
+		@PathVariable(value = "bagId") Long bagId, @CurrentUser Member member) {
+		return ApiResponse.onSuccess(bagService.getBagDetail(travelPlanId, bagId, member));
 	}
 
 	@Operation(summary = "내 가방 목록 상세 조회", description = "내 여행 계획에 해당하는 가방 목록을 상세 조회합니다.")
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, Path Variable 입니다.")
 	@GetMapping("/members/bags/{travelPlanId}")
 	public ApiResponse<GetBagListDetailInfo> getBagDetailListByTravelPlan(
-		@PathVariable(value = "travelPlanId") Long travelPlanId) {
-		return ApiResponse.onSuccess(bagService.getBagDetailListByTravelPlan(travelPlanId));
+		@PathVariable(value = "travelPlanId") Long travelPlanId, @CurrentUser Member member) {
+		return ApiResponse.onSuccess(bagService.getBagDetailListByTravelPlan(travelPlanId, member));
 	}
 
 }
