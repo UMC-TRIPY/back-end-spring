@@ -21,7 +21,6 @@ import com.example.tripy.domain.material.MaterialRepository;
 import com.example.tripy.domain.material.dto.MaterialRequestDto.CreateMaterialRequest;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.member.Member;
-import com.example.tripy.domain.member.MemberRepository;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import com.example.tripy.domain.travelplan.TravelPlanRepository;
 import com.example.tripy.global.common.PageResponseDto;
@@ -42,7 +41,6 @@ public class BagService {
 
 	private final CityPlanRepository cityPlanRepository;
 	private final TravelPlanRepository travelPlanRepository;
-	private final MemberRepository memberRepository;
 	private final BagRepository bagRepository;
 	private final BagMaterialsRepository bagMaterialsRepository;
 	private final MaterialRepository materialRepository;
@@ -70,11 +68,8 @@ public class BagService {
 
 
 	// 내 일정에 맞는 가방 목록 모두 불러오기
-	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size, Long id) {
-
-		// Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+	public PageResponseDto<List<BagListSimpleInfo>> getTravelBagExistsList(int page, int size,
+		Member member) {
 
 		Pageable pageable = PageRequest.of(page, size);
 		Page<TravelPlan> result = travelPlanRepository.findAllByMemberAndBagExistsIsTrue(member,
@@ -87,11 +82,7 @@ public class BagService {
 	}
 
 	@Transactional
-	public String updateBagExists(Long travelPlanId) {
-
-		//Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(1L)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+	public String updateBagExists(Long travelPlanId, Member member) {
 
 		//bagExists 값이 False인 TravelPlan만 가능, 이미 가방이 존재하면 예외 처리
 		TravelPlan travelPlan = travelPlanRepository.findByMemberAndIdAndBagExistsIsFalse(member,
@@ -104,10 +95,7 @@ public class BagService {
 	}
 
 	@Transactional
-	public String addBag(CreateBagRequest createBagRequest, Long travelPlanId) {
-
-		Member member = memberRepository.findById(1L)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+	public String addBag(CreateBagRequest createBagRequest, Long travelPlanId, Member member) {
 
 		//bagExists 값이 True인 TravelPlan만 가능
 		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
@@ -117,10 +105,9 @@ public class BagService {
 		return "가방 추가 완료";
 	}
 
-	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long travelPlanId) {
+	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long travelPlanId,
+		Member member) {
 		//Member 관련 메서드가 추가되면 수정 예정
-		Member member = memberRepository.findById(1L)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
 
 		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
@@ -137,9 +124,9 @@ public class BagService {
 
 	@Transactional
 	public GetBagSimpleInfo updateMemo(UpdateBagContent updateBagContent, Long travelPlanId,
-		Long bagId) {
+		Long bagId, Member member) {
 
-		Bag bag = getBag(bagId, travelPlanId);
+		Bag bag = getBag(bagId, travelPlanId, member);
 
 		bag.updateBagContent(updateBagContent.getBagContent());
 
@@ -148,10 +135,9 @@ public class BagService {
 
 	@Transactional
 	public BagListWithMaterialInfo addBagMaterial(CreateMaterialRequest createMaterialRequest,
-		Long travelPlanId,
-		Long bagId) {
+		Long travelPlanId, Long bagId, Member member) {
 
-		Bag bag = getBag(bagId, travelPlanId);
+		Bag bag = getBag(bagId, travelPlanId, member);
 
 		saveMaterialAndLinkToBag(bag, createMaterialRequest);
 
@@ -187,10 +173,10 @@ public class BagService {
 
 	@Transactional
 	public BagListWithMaterialInfo updateBagMaterialName(
-		CreateMaterialRequest createMaterialRequest, Long travelPlanId, Long bagId,
-		Long materialId) {
+		CreateMaterialRequest createMaterialRequest, Long travelPlanId, Long bagId, Long materialId,
+		Member member) {
 
-		Bag bag = getBag(bagId, travelPlanId);
+		Bag bag = getBag(bagId, travelPlanId, member);
 
 		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
 
@@ -199,16 +185,17 @@ public class BagService {
 		return getBagMaterials(bag);
 	}
 
-	private Bag getBag(Long bagId, Long travelPlanId) {
-		return bagRepository.findBagByIdAndTravelPlanId(bagId, travelPlanId)
+	private Bag getBag(Long bagId, Long travelPlanId, Member member) {
+		//본인 멤버 관련 가방 검증 로직 추가
+		return bagRepository.findBagByIdAndTravelPlanIdAndMember(bagId, travelPlanId, member)
 			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_BAG));
 	}
 
 	@Transactional
 	public BagListWithMaterialInfo deleteBagMaterial(Long travelPlanId, Long bagId,
-		Long materialId) {
+		Long materialId, Member member) {
 
-		Bag bag = getBag(bagId, travelPlanId);
+		Bag bag = getBag(bagId, travelPlanId, member);
 		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
 
 		bagMaterialsRepository.delete(bagMaterial);
@@ -223,20 +210,17 @@ public class BagService {
 
 	@Transactional
 	public Boolean updateBagMaterialIsChecked(Long travelPlanId, Long bagId,
-		Long materialId) {
-		Bag bag = getBag(bagId, travelPlanId);
+		Long materialId, Member member) {
+		Bag bag = getBag(bagId, travelPlanId, member);
 		BagMaterials bagMaterial = getBagMaterials(bag, materialId);
 
 		return bagMaterial.updateBagMaterialIsChecked();
 
 	}
 
-	public GetBagDetailInfo getBagDetail(Long travelPlanId, Long bagId) {
+	public GetBagDetailInfo getBagDetail(Long travelPlanId, Long bagId, Member member) {
 
-		Member member = memberRepository.findById(1L)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
-
-		Bag bag = getBag(bagId, travelPlanId);
+		Bag bag = getBag(bagId, travelPlanId, member);
 
 		BagListWithMaterialInfo bagListWithMaterialInfo = getBagMaterials(bag);
 
@@ -261,10 +245,7 @@ public class BagService {
 			.orElseThrow(() -> new GeneralException(ErrorStatus._FAULT_TRAVEL_PLAN_BAG_EXISTS));
 	}
 
-	public GetBagListDetailInfo getBagDetailListByTravelPlan(Long travelPlanId) {
-
-		Member member = memberRepository.findById(1L)
-			.orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
+	public GetBagListDetailInfo getBagDetailListByTravelPlan(Long travelPlanId, Member member) {
 
 		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 

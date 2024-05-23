@@ -1,5 +1,6 @@
 package com.example.tripy.domain.bag;
 
+import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.travelplan.TravelPlan;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,6 @@ public interface BagRepository extends JpaRepository<Bag, Long> {
 
 	List<Bag> findBagsByTravelPlan(TravelPlan travelPlan);
 
-	Optional<Bag> findBagByIdAndTravelPlanId(Long id, Long travelPlanId);
+	Optional<Bag> findBagByIdAndTravelPlanIdAndMember(Long id, Long travelPlanId, Member member);
 
 }
