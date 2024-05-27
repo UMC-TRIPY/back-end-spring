@@ -4,7 +4,7 @@ import com.example.tripy.domain.bag.Bag;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.travelplan.TravelPlan;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +18,15 @@ public class BagResponseDto {
 	@AllArgsConstructor
 	public static class BagListSimpleInfo {
 
-		private Date departure;
-		private Date arrival;
+		private LocalDate departureDate;
+		private LocalDate arrivalDate;
 		private List<String> cities;
 		private Long travelPlanId;
 
 		@Builder
 		public BagListSimpleInfo(List<String> cities, TravelPlan travelPlan) {
-			this.departure = travelPlan.getDeparture();
-			this.arrival = travelPlan.getArrival();
+			this.departureDate = travelPlan.getDepartureDate();
+			this.arrivalDate = travelPlan.getArrivalDate();
 			this.cities = cities;
 			this.travelPlanId = travelPlan.getId();
 		}
@@ -107,16 +107,16 @@ public class BagResponseDto {
 	@Builder
 	public static class GetBagListDetailInfo {
 
-		private Date departure;
-		private Date arrival;
+		private LocalDate departure;
+		private LocalDate arrival;
 		private List<String> cities;
 		private List<GetBagSimpleListInfo> bags;
 
 		public static GetBagListDetailInfo toDto(List<GetBagSimpleListInfo> bags,
 			List<String> cities, TravelPlan travelPlan) {
 			return GetBagListDetailInfo.builder()
-				.departure(travelPlan.getDeparture())
-				.arrival(travelPlan.getArrival())
+				.departure(travelPlan.getDepartureDate())
+				.arrival(travelPlan.getArrivalDate())
 				.cities(cities)
 				.bags(bags)
 				.build();
