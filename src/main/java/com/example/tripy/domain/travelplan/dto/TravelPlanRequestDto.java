@@ -14,8 +14,8 @@ public class TravelPlanRequestDto {
     @Getter
     public static class CreateTravelPlanRequest{
         private List<String> cityNameList;
-        private LocalDate departure;
-        private LocalDate arrival;
+        private LocalDate departureDate;
+        private LocalDate arrivalDate;
 
 
     }

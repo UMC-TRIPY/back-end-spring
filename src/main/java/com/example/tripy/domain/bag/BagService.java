@@ -57,8 +57,8 @@ public class BagService {
 					.collect(Collectors.toList());
 
 				return new BagListSimpleInfo(
-					travelPlan.getDeparture(),
-					travelPlan.getArrival(),
+					travelPlan.getDepartureDate(),
+					travelPlan.getArrivalDate(),
 					cities,
 					travelPlan.getId()
 				);

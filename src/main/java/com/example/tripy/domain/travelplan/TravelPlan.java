@@ -11,15 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
@@ -32,9 +29,11 @@ public class TravelPlan extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate departure;
+    @Column(name="departure")
+    private LocalDate departureDate;
 
-    private LocalDate arrival;
+    @Column(name="arrival")
+    private LocalDate arrivalDate;
 
     private Boolean bagExists = false; // 가방 존재 여부 확인
 
@@ -44,8 +43,8 @@ public class TravelPlan extends BaseTimeEntity {
 
     public static TravelPlan toEntity(CreateTravelPlanRequest createTravelPlanRequest, Member member){
         return TravelPlan.builder()
-            .departure(createTravelPlanRequest.getDeparture())
-            .arrival(createTravelPlanRequest.getArrival())
+            .departureDate(createTravelPlanRequest.getDepartureDate())
+            .arrivalDate(createTravelPlanRequest.getArrivalDate())
             .member(member)
             .bagExists(false)
             .build();
