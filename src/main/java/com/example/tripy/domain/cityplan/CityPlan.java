@@ -14,7 +14,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class CityPlan extends BaseTimeEntity {
 
     @Id
@@ -35,4 +38,13 @@ public class CityPlan extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travelplan_id")
     private TravelPlan travelPlan;
+
+    public static CityPlan toEntity(TravelPlan travelPlan, City city){
+        return CityPlan.builder()
+            .travelPlan(travelPlan)
+            .city(city)
+            .build();
+    }
+
+
 }

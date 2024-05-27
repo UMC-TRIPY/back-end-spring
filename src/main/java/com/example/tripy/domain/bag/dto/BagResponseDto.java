@@ -4,6 +4,8 @@ import com.example.tripy.domain.bag.Bag;
 import com.example.tripy.domain.bagmaterials.dto.BagMaterialsResponseDto.BagMaterialInfo;
 import com.example.tripy.domain.material.dto.MaterialResponseDto.MaterialListByCountry;
 import com.example.tripy.domain.travelplan.TravelPlan;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -18,8 +20,8 @@ public class BagResponseDto {
 	@AllArgsConstructor
 	public static class BagListSimpleInfo {
 
-		private Date departure;
-		private Date arrival;
+		private LocalDate departure;
+		private LocalDate arrival;
 		private List<String> cities;
 		private Long travelPlanId;
 
@@ -107,8 +109,8 @@ public class BagResponseDto {
 	@Builder
 	public static class GetBagListDetailInfo {
 
-		private Date departure;
-		private Date arrival;
+		private LocalDate departure;
+		private LocalDate arrival;
 		private List<String> cities;
 		private List<GetBagSimpleListInfo> bags;
 
