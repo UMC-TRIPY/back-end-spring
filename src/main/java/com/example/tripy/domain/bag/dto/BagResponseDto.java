@@ -141,4 +141,20 @@ public class BagResponseDto {
 		}
 	}
 
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class BagAdditionInfo {
+
+		private Long bagId;
+
+
+		public static BagAdditionInfo toDto(Bag bag) {
+			return BagAdditionInfo.builder()
+				.bagId(bag.getId())
+				.build();
+		}
+	}
+
 }
