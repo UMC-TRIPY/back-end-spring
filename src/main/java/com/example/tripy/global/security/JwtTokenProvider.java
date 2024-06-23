@@ -108,9 +108,8 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(getSecretKey()).parseClaimsJws(token);
-            Date now = new Date();
-            long nowMillis = now.getTime();
-            if (claimsJws.getBody().getExpiration().before(new Date())) {
+            Date expiration = claimsJws.getBody().getExpiration();
+            if (expiration != null && expiration.before(new Date())) {
                 throw new GeneralException(ErrorStatus._EXPIRED_JWT);
             }
             return true;

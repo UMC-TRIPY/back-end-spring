@@ -5,6 +5,7 @@ import com.example.tripy.domain.travelplan.dto.TravelPlanRequestDto.CreateTravel
 import com.example.tripy.domain.travelplan.dto.TravelPlanResponse.GetTravelPlanSimpleInfo;
 import com.example.tripy.global.response.ApiResponse;
 import com.example.tripy.global.security.CurrentUser;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TravelPlanController {
     private final TravelPlanService travelPlanService;
     @PostMapping("/api/travelPlans")
+    @Operation(summary = "여행계획 추가")
     public ApiResponse<GetTravelPlanSimpleInfo> createTravelPlan(@RequestBody CreateTravelPlanRequest createTravelPlanRequest, @CurrentUser Member member){
         return ApiResponse.onSuccess(travelPlanService.addTravelPlan(member, createTravelPlanRequest));
     }
