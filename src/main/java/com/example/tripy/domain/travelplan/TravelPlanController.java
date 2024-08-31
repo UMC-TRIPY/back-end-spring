@@ -15,9 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = "여행 계획 API")
 public class TravelPlanController {
+
     private final TravelPlanService travelPlanService;
+
     @PostMapping("/api/travelPlans")
-    public ApiResponse<GetTravelPlanSimpleInfo> createTravelPlan(@RequestBody CreateTravelPlanRequest createTravelPlanRequest, @CurrentUser Member member){
-        return ApiResponse.onSuccess(travelPlanService.addTravelPlan(member, createTravelPlanRequest));
+    public ApiResponse<GetTravelPlanSimpleInfo> createTravelPlan(
+        @RequestBody CreateTravelPlanRequest createTravelPlanRequest, @CurrentUser Member member) {
+        return ApiResponse.onSuccess(
+            travelPlanService.addTravelPlan(member, createTravelPlanRequest));
     }
+
 }

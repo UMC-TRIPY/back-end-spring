@@ -12,15 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class TravelPlanService {
+
     private final TravelPlanRepository travelPlanRepository;
     private final CityPlanService cityPlanService;
 
     @Transactional
-    public GetTravelPlanSimpleInfo addTravelPlan(Member member, CreateTravelPlanRequest createTravelPlanRequest){
+    public GetTravelPlanSimpleInfo addTravelPlan(Member member,
+        CreateTravelPlanRequest createTravelPlanRequest) {
         TravelPlan travelPlan = TravelPlan.toEntity(createTravelPlanRequest, member);
         travelPlanRepository.save(travelPlan);
         List<String> cityLists = createTravelPlanRequest.getCityNameList();
         cityPlanService.addCityPlan(cityLists, travelPlan);
         return GetTravelPlanSimpleInfo.toDto(travelPlan.getId());
     }
+
 }
