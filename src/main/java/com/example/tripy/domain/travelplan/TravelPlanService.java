@@ -6,7 +6,12 @@ import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.travelplan.dto.TravelPlanRequestDto.CreateTravelPlanRequest;
 import com.example.tripy.domain.travelplan.dto.TravelPlanResponse.GetTravelPlanListSimpleInfo;
 import com.example.tripy.domain.travelplan.dto.TravelPlanResponse.GetTravelPlanSimpleInfo;
+import com.example.tripy.domain.traveltimeplan.TravelTimePlan;
+import com.example.tripy.domain.traveltimeplan.TravelTimePlanRepository;
+import com.example.tripy.domain.traveltimeplan.dto.TravelTimePlanResponseDto.GetTravelTimePlanDetailInfo;
 import com.example.tripy.global.common.PageResponseDto;
+import com.example.tripy.global.response.code.status.ErrorStatus;
+import com.example.tripy.global.response.exception.GeneralException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +28,7 @@ public class TravelPlanService {
     private final TravelPlanRepository travelPlanRepository;
     private final CityPlanService cityPlanService;
     private final CityPlanRepository cityPlanRepository;
+    private final TravelTimePlanRepository travelTimePlanRepository;
 
     @Transactional
     public GetTravelPlanSimpleInfo addTravelPlan(Member member,
@@ -60,6 +66,24 @@ public class TravelPlanService {
             })
             .collect(Collectors.toList());
 
+    }
+
+    public List<GetTravelTimePlanDetailInfo> getTravelPlanDetail(Member member, Long travelPlanId) {
+
+        TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
+
+        List<TravelTimePlan> travelTimePlans = travelTimePlanRepository.findTravelTimePlansByTravelPlan(
+            travelPlan);
+
+        return travelTimePlans.stream().
+            map(GetTravelTimePlanDetailInfo::toDTO)
+            .collect(Collectors.toList());
+
+    }
+
+    private TravelPlan getTravelPlanById(Member member, Long travelPlanId) {
+        return travelPlanRepository.findByMemberAndId(member, travelPlanId)
+            .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_TRAVEL_PLAN));
     }
 
 }
