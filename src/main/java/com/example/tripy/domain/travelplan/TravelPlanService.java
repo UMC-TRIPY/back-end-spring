@@ -55,7 +55,7 @@ public class TravelPlanService {
                     .map(cityPlan -> cityPlan.getCity().getName())
                     .collect(Collectors.toList());
 
-                return GetTravelPlanListSimpleInfo.toDto(travelPlan, cities
+                return GetTravelPlanListSimpleInfo.toDTO(travelPlan, cities
                 );
             })
             .collect(Collectors.toList());
