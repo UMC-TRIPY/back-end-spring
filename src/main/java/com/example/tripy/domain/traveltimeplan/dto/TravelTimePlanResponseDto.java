@@ -1,7 +1,9 @@
 package com.example.tripy.domain.traveltimeplan.dto;
 
 import com.example.tripy.domain.traveltimeplan.TravelTimePlan;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,17 +21,9 @@ public class TravelTimePlanResponseDto {
         String color;
         String lineColor;
         String title;
-        LocalTime departure;
-        int halfHourReputationCount;
-        String place;
-
-        String budget;
-
         String memo;
-
-        String imageUrl;
-
-        String planUrl;
+        LocalTime departure;
+        Date date;
 
         public static GetTravelTimePlanDetailInfo toDTO(TravelTimePlan travelTimePlan) {
             return GetTravelTimePlanDetailInfo.builder()
@@ -37,13 +31,9 @@ public class TravelTimePlanResponseDto {
                 .color(travelTimePlan.getColor())
                 .lineColor(travelTimePlan.getLineColor())
                 .title(travelTimePlan.getTitle())
-                .departure(travelTimePlan.getDeparture())
-                .halfHourReputationCount(travelTimePlan.getHalfHourReputationCount())
-                .place(travelTimePlan.getPlace())
-                .budget(travelTimePlan.getBudget())
                 .memo(travelTimePlan.getMemo())
-                .imageUrl(travelTimePlan.getImageUrl())
-                .planUrl(travelTimePlan.getPlanUrl())
+                .departure(travelTimePlan.getDeparture())
+                .date(travelTimePlan.getDate())
                 .build();
 
         }
