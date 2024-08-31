@@ -31,7 +31,7 @@ public class TravelPlanService {
         travelPlanRepository.save(travelPlan);
         List<String> cityLists = createTravelPlanRequest.getCityNameList();
         cityPlanService.addCityPlan(cityLists, travelPlan);
-        return GetTravelPlanSimpleInfo.toDto(travelPlan.getId());
+        return GetTravelPlanSimpleInfo.toDTO(travelPlan.getId());
     }
 
     public PageResponseDto<List<GetTravelPlanListSimpleInfo>> getTravelPlanExistsList(int page,
