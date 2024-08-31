@@ -43,7 +43,7 @@ public class BagController {
 	 * [GET] 내 여행 가방 모두 불러오기
 	 */
 
-	@GetMapping("/members/bag")
+	@GetMapping("/members/bags")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
 		@CurrentUser Member member, @RequestParam(value = "page") int page,
 		@RequestParam(value = "size") int size) {
