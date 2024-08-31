@@ -48,6 +48,8 @@ public class TravelPlanController {
         return ApiResponse.onSuccess(travelPlanService.getTravelPlanExistsList(page, size, member));
     }
 
+
+    //TODO : Date 값 이상하게 들어가는 현상 해결 필요
     @Operation(summary = "여행 일정 상세 조회하기", description = "여행 목록을 상세 조회힙니다.")
     @GetMapping("/{travelPlanId}")
     public ApiResponse<List<GetTravelTimePlanDetailInfo>> getTravelPlanDetail(
