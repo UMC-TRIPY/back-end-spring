@@ -1,7 +1,6 @@
 package com.example.tripy.domain.traveltimeplan.dto;
 
 import com.example.tripy.domain.traveltimeplan.TravelTimePlan;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
