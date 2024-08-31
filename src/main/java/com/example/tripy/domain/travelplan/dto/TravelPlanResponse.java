@@ -1,5 +1,8 @@
 package com.example.tripy.domain.travelplan.dto;
 
+import com.example.tripy.domain.travelplan.TravelPlan;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,14 +16,40 @@ public class TravelPlanResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetTravelPlanSimpleInfo {
+
         long planId;
 
-        public static GetTravelPlanSimpleInfo toDto(Long planId){
+        public static GetTravelPlanSimpleInfo toDto(Long planId) {
             return GetTravelPlanSimpleInfo.builder()
                 .planId(planId)
                 .build();
 
         }
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTravelPlanListSimpleInfo {
+
+        Long travelPlanId;
+        LocalDate departureDate;
+        LocalDate arrivalDate;
+        Boolean bagExists;
+        List<String> cities;
+
+        public static GetTravelPlanListSimpleInfo toDto(TravelPlan travelPlan,
+            List<String> cities) {
+            return GetTravelPlanListSimpleInfo.builder()
+                .travelPlanId(travelPlan.getId())
+                .departureDate(travelPlan.getArrivalDate())
+                .arrivalDate(travelPlan.getArrivalDate())
+                .bagExists(travelPlan.getBagExists())
+                .cities(cities)
+                .build();
+        }
+
     }
 
 }
