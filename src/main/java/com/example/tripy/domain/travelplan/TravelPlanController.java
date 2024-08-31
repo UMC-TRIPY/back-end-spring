@@ -4,6 +4,7 @@ import com.example.tripy.domain.member.Member;
 import com.example.tripy.domain.travelplan.dto.TravelPlanRequestDto.CreateTravelPlanRequest;
 import com.example.tripy.domain.travelplan.dto.TravelPlanResponse.GetTravelPlanListSimpleInfo;
 import com.example.tripy.domain.travelplan.dto.TravelPlanResponse.GetTravelPlanSimpleInfo;
+import com.example.tripy.domain.traveltimeplan.dto.TravelTimePlanResponseDto.GetTravelTimePlanDetailInfo;
 import com.example.tripy.global.common.PageResponseDto;
 import com.example.tripy.global.response.ApiResponse;
 import com.example.tripy.global.security.CurrentUser;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,14 @@ public class TravelPlanController {
         @CurrentUser Member member, @RequestParam(value = "page") int page,
         @RequestParam(value = "size") int size) {
         return ApiResponse.onSuccess(travelPlanService.getTravelPlanExistsList(page, size, member));
+    }
+
+    @Operation(summary = "여행 일정 상세 조회하기", description = "여행 목록을 상세 조회힙니다.")
+    @GetMapping("/{travelPlanId}")
+    public ApiResponse<List<GetTravelTimePlanDetailInfo>> getTravelPlanDetail(
+        @CurrentUser Member member, @PathVariable(value = "travelPlanId") Long travelPlanId) {
+        return ApiResponse.onSuccess(travelPlanService.getTravelPlanDetail(member, travelPlanId));
+
     }
 
 }
