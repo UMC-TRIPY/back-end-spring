@@ -14,7 +14,7 @@ public class TravelTimePlanResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetTravelTimePlanDetailInfo {
+    public static class GetTravelTimePlanSimpleInfo {
 
         Long travelTimePlanId;
         String color;
@@ -26,8 +26,8 @@ public class TravelTimePlanResponseDto {
         int halfHourReputationCount;
         Date date;
 
-        public static GetTravelTimePlanDetailInfo toDTO(TravelTimePlan travelTimePlan) {
-            return GetTravelTimePlanDetailInfo.builder()
+        public static GetTravelTimePlanSimpleInfo toDTO(TravelTimePlan travelTimePlan) {
+            return GetTravelTimePlanSimpleInfo.builder()
                 .travelTimePlanId(travelTimePlan.getId())
                 .color(travelTimePlan.getColor())
                 .lineColor(travelTimePlan.getLineColor())
@@ -39,6 +39,42 @@ public class TravelTimePlanResponseDto {
                 .date(travelTimePlan.getDate())
                 .build();
 
+        }
+    }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetTravelTimePlanDetailInfo {
+
+        String color;
+        String lineColor;
+        String title;
+        Date date;
+        LocalTime departure;
+        int halfHourReputationCount;
+        String place;
+        String budget;
+        String memo;
+        String imageUrl;
+        String planUrl;
+
+        public static GetTravelTimePlanDetailInfo toDTO(TravelTimePlan travelTimePlan) {
+            return GetTravelTimePlanDetailInfo.builder()
+                .color(travelTimePlan.getColor())
+                .lineColor(travelTimePlan.getLineColor())
+                .title(travelTimePlan.getTitle())
+                .date(travelTimePlan.getDate())
+                .departure(travelTimePlan.getDeparture())
+                .halfHourReputationCount(travelTimePlan.getHalfHourReputationCount())
+                .place(travelTimePlan.getPlace())
+                .budget(travelTimePlan.getBudget())
+                .memo(travelTimePlan.getMemo())
+                .imageUrl(travelTimePlan.getImageUrl())
+                .planUrl(travelTimePlan.getPlanUrl())
+                .build();
         }
     }
 }
