@@ -15,9 +15,9 @@ public class TravelTimePlanRequestDto {
     @Getter
     public static class CreateTravelTimePlanRequest {
 
-        @Schema(description = "색상", example = "red")
+        @Schema(description = "색상", example = "#FF0000")
         private String color;
-        @Schema(description = "라인 색상", example = "yellow")
+        @Schema(description = "라인 색상", example = "#FF0000")
         private String lineColor;
         @Schema(description = "제목", example = "제목")
         private String title;
