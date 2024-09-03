@@ -2,6 +2,7 @@ package com.example.tripy.domain.bag;
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagAdditionInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
@@ -81,7 +82,7 @@ public class BagController {
 	@Operation(summary = "여행 일정에 해당하는 개별 가방 생성(추가)하기", description = "여행 일정에 해당하는 캐리어, 크로스백과 같은 가방을 생성합니다.")
 	@Parameter(name = "travelPlanId", description = "여행 계획 Id, query string 입니다.")
 	@PostMapping("/members/bags")
-	public ApiResponse<String> createBag(@RequestBody CreateBagRequest createBagRequest,
+	public ApiResponse<BagAdditionInfo> createBag(@RequestBody CreateBagRequest createBagRequest,
 		@RequestParam Long travelPlanId, @CurrentUser Member member) {
 		return ApiResponse.onSuccess(bagService.addBag(createBagRequest, travelPlanId, member));
 	}
