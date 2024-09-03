@@ -44,7 +44,10 @@ public class BagController {
 	 * [GET] 내 여행 가방 모두 불러오기
 	 */
 
-	@GetMapping("/member/bag")
+	@GetMapping("/members/bags")
+	@Operation(summary = "내 여행 가방 목록 조회하기", description = "내 여행 가방 목록을 조회힙니다. (일정에서 bag_exists 값이 true 값 조회)")
+	@Parameter(name = "page", description = "페이징 page, query string 입니다.")
+	@Parameter(name = "size", description = "페이징 size, query string 입니다.")
 	public ApiResponse<PageResponseDto<List<BagListSimpleInfo>>> getBagsList(
 		@CurrentUser Member member, @RequestParam(value = "page") int page,
 		@RequestParam(value = "size") int size) {
