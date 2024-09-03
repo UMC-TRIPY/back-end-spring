@@ -67,4 +67,4 @@ jobs:
             sudo docker stop $(sudo docker ps -a -q) 
             sudo docker rm $(sudo docker ps -a -q) 
             sudo docker pull gourderased/spring-project:latest
-            sudo docker run -d -p 8080:8080 --name tripy-server gourderased/spring-project:latest
+            sudo docker run -d -p 8080:8080 -e TZ=Asia/Seoul --name tripy-server gourderased/spring-project:latest
