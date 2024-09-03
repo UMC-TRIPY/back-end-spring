@@ -4,6 +4,8 @@ import static com.example.tripy.domain.bag.dto.BagResponseDto.toBagListWithMater
 
 import com.example.tripy.domain.bag.dto.BagRequestDto.CreateBagRequest;
 import com.example.tripy.domain.bag.dto.BagRequestDto.UpdateBagContent;
+import com.example.tripy.domain.bag.dto.BagResponseDto;
+import com.example.tripy.domain.bag.dto.BagResponseDto.BagAdditionInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListSimpleInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.BagListWithMaterialInfo;
 import com.example.tripy.domain.bag.dto.BagResponseDto.GetBagDetailInfo;
@@ -95,14 +97,13 @@ public class BagService {
 	}
 
 	@Transactional
-	public String addBag(CreateBagRequest createBagRequest, Long travelPlanId, Member member) {
+	public BagAdditionInfo addBag(CreateBagRequest createBagRequest, Long travelPlanId,
+		Member member) {
 
 		//bagExists 값이 True인 TravelPlan만 가능
 		TravelPlan travelPlan = getTravelPlanById(member, travelPlanId);
 
-		saveBag(createBagRequest, member, travelPlan);
-
-		return "가방 추가 완료";
+		return BagResponseDto.BagAdditionInfo.toDto(saveBag(createBagRequest, member, travelPlan));
 	}
 
 	public List<BagListWithMaterialInfo> getBagsListAndMaterialsByTravelPlan(Long travelPlanId,
@@ -144,9 +145,11 @@ public class BagService {
 		return getBagMaterials(bag);
 	}
 
-	private void saveBag(CreateBagRequest createBagRequest, Member member, TravelPlan travelPlan) {
+	private Bag saveBag(CreateBagRequest createBagRequest, Member member, TravelPlan travelPlan) {
 		Bag bag = Bag.toEntity(createBagRequest, member, travelPlan);
 		bagRepository.save(bag);
+
+		return bag;
 	}
 
 	private void saveMaterialAndLinkToBag(Bag bag, CreateMaterialRequest createMaterialRequest) {
