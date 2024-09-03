@@ -166,7 +166,7 @@ public class BagService {
 	private BagListWithMaterialInfo getBagMaterials(Bag bag) {
 		List<BagMaterialInfo> bagMaterialInfos = bagMaterialsRepository.findBagMaterialsByBag(
 				bag).stream()
-			.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getId(),
+			.map(bagMaterials -> new BagMaterialInfo(bagMaterials.getMaterial().getId(),
 				bagMaterials.getMaterial().getName(),
 				bagMaterials.getIsChecked()))
 			.collect(Collectors.toList());
