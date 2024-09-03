@@ -21,6 +21,7 @@ public class TravelTimePlanResponseDto {
         String lineColor;
         String title;
         String memo;
+        String place;
         LocalTime departure;
         int halfHourReputationCount;
         Date date;
@@ -32,6 +33,7 @@ public class TravelTimePlanResponseDto {
                 .lineColor(travelTimePlan.getLineColor())
                 .title(travelTimePlan.getTitle())
                 .memo(travelTimePlan.getMemo())
+                .place(travelTimePlan.getPlace())
                 .departure(travelTimePlan.getDeparture())
                 .halfHourReputationCount(travelTimePlan.getHalfHourReputationCount())
                 .date(travelTimePlan.getDate())
