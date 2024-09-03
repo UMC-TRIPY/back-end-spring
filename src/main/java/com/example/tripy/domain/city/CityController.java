@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @Tag(name = "도시 API")
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @RestController
 public class CityController {
 

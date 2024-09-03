@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @Tag(name = "국가 API")
-@RequestMapping("/api/")
+@RequestMapping("/api")
 @RestController
 public class CountryController {
 
