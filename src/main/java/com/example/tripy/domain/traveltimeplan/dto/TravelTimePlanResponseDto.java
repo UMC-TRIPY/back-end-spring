@@ -22,6 +22,7 @@ public class TravelTimePlanResponseDto {
         String title;
         String memo;
         LocalTime departure;
+        int halfHourReputationCount;
         Date date;
 
         public static GetTravelTimePlanDetailInfo toDTO(TravelTimePlan travelTimePlan) {
@@ -32,6 +33,7 @@ public class TravelTimePlanResponseDto {
                 .title(travelTimePlan.getTitle())
                 .memo(travelTimePlan.getMemo())
                 .departure(travelTimePlan.getDeparture())
+                .halfHourReputationCount(travelTimePlan.getHalfHourReputationCount())
                 .date(travelTimePlan.getDate())
                 .build();
 
