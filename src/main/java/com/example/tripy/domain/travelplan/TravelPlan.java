@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,10 +28,10 @@ public class TravelPlan extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="departure")
+    @Column(name = "departure")
     private LocalDate departureDate;
 
-    @Column(name="arrival")
+    @Column(name = "arrival")
     private LocalDate arrivalDate;
 
     private Boolean bagExists = false; // 가방 존재 여부 확인
@@ -41,7 +40,8 @@ public class TravelPlan extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static TravelPlan toEntity(CreateTravelPlanRequest createTravelPlanRequest, Member member){
+    public static TravelPlan toEntity(CreateTravelPlanRequest createTravelPlanRequest,
+        Member member) {
         return TravelPlan.builder()
             .departureDate(createTravelPlanRequest.getDepartureDate())
             .arrivalDate(createTravelPlanRequest.getArrivalDate())

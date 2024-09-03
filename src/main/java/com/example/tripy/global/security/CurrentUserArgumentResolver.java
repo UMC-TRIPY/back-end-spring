@@ -7,6 +7,7 @@ import com.example.tripy.global.response.exception.GeneralException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -16,6 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -54,6 +56,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
             return memberRepository.findById(Long.valueOf(userId))
                 .orElseThrow(() -> new GeneralException(ErrorStatus._EMPTY_MEMBER));
         } catch (Exception ex) {
+            log.error(ex.toString());
             throw new GeneralException(ErrorStatus._INVALID_JWT);
         }
     }

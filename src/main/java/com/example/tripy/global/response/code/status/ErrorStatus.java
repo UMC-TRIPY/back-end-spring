@@ -41,6 +41,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _FAULT_TRAVEL_PLAN_BAG_EXISTS(HttpStatus.BAD_REQUEST,"TRAVEL_PLAN_003",
 		"여행 목록에 해당하는 가방 목록이 생성되지 않았습니다."),
 
+    _EMPTY_TRAVEL_TIME_PLAN(HttpStatus.NOT_FOUND, "TRAVEL_TIME_PLAN_001", "존재하지 않는 여행 일정 계획입니다."),
+
     //S3 관련
     _FAULT_S3_KEY(HttpStatus.NOT_FOUND, "S3_001", "잘못된 S3 정보입니다."),
 
